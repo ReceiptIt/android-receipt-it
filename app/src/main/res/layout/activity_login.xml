@@ -9,18 +9,22 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="@dimen/margin_small"
+            android:paddingLeft="@dimen/margin_small"
+            android:paddingRight="@dimen/margin_small"
+            android:paddingTop="@dimen/margin_small"
             tools:context=".login.LoginActivity">
 
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tl_username_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginStart="@dimen/margin_left"
-                android:layout_marginEnd="@dimen/margin_left"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_huge"
+                android:layout_marginEnd="@dimen/margin_medium"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:hint="@string/login_user_name">
             <com.google.android.material.textfield.TextInputEditText
@@ -37,8 +41,9 @@
                 app:layout_constraintTop_toBottomOf="@id/tl_username_layout"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginStart="@dimen/margin_left"
-                android:layout_marginEnd="@dimen/margin_left"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_tiny"
+                android:layout_marginEnd="@dimen/margin_medium"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:hint="@string/login_user_password">
             <com.google.android.material.textfield.TextInputEditText
@@ -55,7 +60,7 @@
                 android:id="@+id/btn_login_button"
                 app:layout_constraintTop_toBottomOf="@id/tl_password_layout"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginEnd="@dimen/margin_left"
+                android:layout_marginEnd="@dimen/margin_medium"
                 android:text="@string/login_button"
                 android:onClick="@{()->viewmodel.onClick()}"/>
 
@@ -63,11 +68,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/cb_remember_me"
-                android:layout_marginStart="@dimen/margin_left"
+                android:layout_marginStart="@dimen/margin_medium"
                 app:layout_constraintTop_toBottomOf="@id/tl_password_layout"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:text="@string/login_remember_me"
                 android:checked="@={viewmodel.rememberMe}"/>
+
+        <ProgressBar
+                android:id="@+id/pb_login_progress_bar"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_big"
+                android:layout_marginEnd="@dimen/margin_big"
+                android:layout_marginBottom="@dimen/margin_large"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_login_button"
+                app:layout_constraintEnd_toEndOf="@+id/btn_login_button"
+                app:layout_constraintStart_toStartOf="@+id/tl_password_layout"
+                app:layout_constraintVertical_bias="0.1"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

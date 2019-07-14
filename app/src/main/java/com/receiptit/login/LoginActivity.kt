@@ -1,5 +1,6 @@
 package com.receiptit.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -8,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.receiptit.R
 import com.receiptit.databinding.ActivityLoginBinding
+import com.receiptit.receiptList.ReceiptListActivity
 import com.receiptit.viewModel.ViewModelFactory
 
 
@@ -34,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
         })
 
         model.userLoginSuccessEvent.observe(this, Observer {
-
+            startActivity(Intent(this, ReceiptListActivity::class.java))
         })
 
         model.userLoginFailEvent.observe(this, Observer {

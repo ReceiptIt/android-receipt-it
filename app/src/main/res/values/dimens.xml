@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="margin_left">16dp</dimen>
-    <dimen name="margin_right">16dp</dimen>
+    <dimen name="margin_tiny">8dp</dimen>
+    <dimen name="margin_small">16dp</dimen>
+    <dimen name="margin_medium">24dp</dimen>
+    <dimen name="margin_big">32dp</dimen>
+    <dimen name="margin_large">64dp</dimen>
+    <dimen name="margin_huge">96dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
