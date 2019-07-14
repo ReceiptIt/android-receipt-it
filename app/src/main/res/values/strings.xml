@@ -13,6 +13,16 @@
     <string name="title_activity_receipt_list">ReceiptListActivity</string>
 
     <!--receipt list-->
-    <string name="receipt_list_activity">Receipt It</string>
+    <string name="receipt_list_activity">Receipt List</string>
+
+    <!--receipt product list-->
+    <string name="receipt_product_list_activity">Product List</string>
+    <string name="receipt_product_list_receipt_info_merchant">Merchant</string>
+    <string name="receipt_product_list_receipt_info_post_code">Post Code</string>
+    <string name="receipt_product_list_receipt_info_purchased_date">Purchased Date</string>
+    <string name="receipt_product_list_receipt_info_total_amount">Total Amount</string>
+    <string name="receipt_product_list_receipt_info_currency">Currency Code</string>
+    <string name="receipt_product_list_receipt_info_comment">Receipt Comment</string>
+    <string name="receipt_product_list_product_info_description">Product Description</string>
 
 </resources>

@@ -15,7 +15,6 @@ class ReceiptListRecyclerViewAdapter(private val list: List<ReceiptListItem>, pr
         fun onReceiptListItemClick()
     }
 
-//    private var mOnReceiptListItemClickListener: onReceiptListItemClickListerner? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReceiptListItemViewHolder {
         return ReceiptListItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.receipt_list_item, parent, false), mOnReceiptListItemClickListener)
@@ -31,7 +30,7 @@ class ReceiptListRecyclerViewAdapter(private val list: List<ReceiptListItem>, pr
     }
 
     class ReceiptListItemViewHolder(itemView: View, listener: onReceiptListItemClickListerner) : RecyclerView.ViewHolder(itemView) {
-        private val tvReceiptName: TextView = itemView.findViewById(R.id.tv_receipt_list_item_merchant)
+        private val tvReceiptMerchant: TextView = itemView.findViewById(R.id.tv_receipt_list_item_merchant)
         private val tvReceiptPostcode: TextView = itemView.findViewById(R.id.tv_receipt_list_item_postcode)
         private val tvReceiptTotalAmount: TextView = itemView.findViewById(R.id.tv_receipt_list_item_total_amount)
         private var tvReceiptCurrency: TextView = itemView.findViewById(R.id.tv_receipt_list_item_currency_code)
@@ -44,8 +43,8 @@ class ReceiptListRecyclerViewAdapter(private val list: List<ReceiptListItem>, pr
         }
 
         fun bind(item: ReceiptListItem) {
-            tvReceiptName.text = item.merchant
-            tvReceiptPostcode.text = "Post Code: " + item.postcode
+            tvReceiptMerchant.text = item.merchant
+            tvReceiptPostcode.text = item.postcode
             tvReceiptTotalAmount.text = item.totalAmount.toString()
             tvReceiptCurrency.text = item.currency.currencyCode
 
