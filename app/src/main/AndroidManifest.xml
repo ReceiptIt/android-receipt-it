@@ -9,6 +9,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".receiptProductList.ReceiptProductListActivity">
+        </activity>
         <activity
                 android:name=".receiptList.ReceiptListActivity"
                 android:label="@string/title_activity_receipt_list"

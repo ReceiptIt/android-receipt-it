@@ -30,13 +30,6 @@ class LoginViewModel : ViewModel() {
         }
     }.also { it.observeForever { /* empty */ } }
 
-    private val mutableEnableLogin = MutableLiveData<String>().apply { value = "fuck" }
-    val enableLogin = MediatorLiveData<String>().apply {
-        addSource(mutableEnableLogin) { value ->
-            setValue(value)
-        }
-    }.also { it.observeForever { /* empty */ } }
-
     /***
      * https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150
      */
