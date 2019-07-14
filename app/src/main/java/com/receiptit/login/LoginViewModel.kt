@@ -44,4 +44,14 @@ class LoginViewModel : ViewModel() {
     fun isRememberMe(): Boolean {
         return rememberMe.value!!
     }
+
+    fun rememberUser() {
+        if (isRememberMe()) {
+            storeUserInfoIntoCache()
+        }
+    }
+
+    //TODO: store user info into cache
+    fun storeUserInfoIntoCache() {
+    }
 }

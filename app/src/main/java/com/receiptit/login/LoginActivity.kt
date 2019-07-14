@@ -33,21 +33,9 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.login_error_empty_username_or_password), Toast.LENGTH_SHORT)
                     .show()
             } else {
-                rememberUser()
+                model.rememberUser()
             }
         }
     }
-
-
-    fun rememberUser() {
-        if (model.isRememberMe()) {
-            storeUserInfoIntoCache()
-        }
-    }
-
-    //TODO: store user info into cache
-    fun storeUserInfoIntoCache() {
-    }
-
 
 }
