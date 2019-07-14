@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">Receipt It</string>
+
+    <!--Login-->
+    <string name="login_activity">Login</string>
     <string name="login_user_name">Username</string>
     <string name="login_user_password">Password</string>
     <string name="login_button">login</string>
     <string name="login_remember_me">Remember me</string>
     <string name="login_error_empty_username_or_password">Username or password should not be empty!</string>
+    <string name="login_error_authentication_fail">Login fail.</string>
+    <string name="login_success">Login success.</string>
 
 </resources>

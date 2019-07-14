@@ -1,6 +1,7 @@
 package com.receiptit.login
 
 import androidx.lifecycle.*
+import com.receiptit.singleLiveEvent.SingleLiveEvent
 
 /***
  * https://stackoverflow.com/questions/50876372/live-data-and-2-way-data-binding-custom-setter-not-being-called
@@ -36,22 +37,56 @@ class LoginViewModel : ViewModel() {
         }
     }.also { it.observeForever { /* empty */ } }
 
-    //
-    fun isUserInfoValid(): Boolean {
+    /***
+     * https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150
+     */
+    private val singleIsUserInfoValidEvent = SingleLiveEvent<Any>()
+    val isUserInfoValidEvent : LiveData<Any>
+    get() = singleIsUserInfoValidEvent
+
+    private val singleUserLoginSuccessEvent = SingleLiveEvent<Any>()
+    val userLoginSuccessEvent : LiveData<Any>
+    get() = singleUserLoginSuccessEvent
+
+    private val singleUserLoginFailEvent = SingleLiveEvent<Any>()
+    val userLoginFailEvent : LiveData<Any>
+        get() = singleUserLoginFailEvent
+
+
+    private fun isUserInfoValid(): Boolean {
         return !(password.value.toString() == "" || username.value.toString() == "")
     }
 
-    fun isRememberMe(): Boolean {
+    private fun isRememberMe(): Boolean {
         return rememberMe.value!!
     }
 
-    fun rememberUser() {
+    private fun rememberUser() {
         if (isRememberMe()) {
             storeUserInfoIntoCache()
         }
     }
 
     //TODO: store user info into cache
-    fun storeUserInfoIntoCache() {
+    private fun storeUserInfoIntoCache() {
     }
+
+    //TODO: network request and progress bar
+    private fun login() {
+        rememberUser()
+        //user login success
+        singleUserLoginSuccessEvent.call()
+        //user login fail
+//        singleUserLoginFailEvent.call()
+    }
+
+    fun onClick() {
+        if (!isUserInfoValid()) {
+            singleIsUserInfoValidEvent.call()
+        } else {
+            login()
+        }
+    }
+
+
 }
