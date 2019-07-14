@@ -1,69 +1,47 @@
 package com.receiptit.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 
+/***
+ * https://stackoverflow.com/questions/50876372/live-data-and-2-way-data-binding-custom-setter-not-being-called
+ */
 
-class LoginViewModel :ViewModel() {
-    private var mutableUsername = MutableLiveData<String>().apply { value = "110" }
-    private var mutablePassword = MutableLiveData<String>().apply { value = "" }
-    private var mutableRememberMe = MutableLiveData<Boolean>().apply { value = false }
+class LoginViewModel : ViewModel() {
 
-    private val username: LiveData<String> = mutableUsername
-    private val password: LiveData<String> = mutablePassword
-    private val rememberMe: LiveData<Boolean> = mutableRememberMe
+    private val mutableUsername = MutableLiveData<String>().apply { value = "" }
+    val username = MediatorLiveData<String>().apply {
+        addSource(mutableUsername) { value ->
+            setValue(value)
+        }
+    }.also { it.observeForever { /* empty */ } }
 
+    private val mutablePassword = MutableLiveData<String>().apply { value = "" }
+    val password = MediatorLiveData<String>().apply {
+        addSource(mutablePassword) { value ->
+            setValue(value)
+        }
+    }.also { it.observeForever { /* empty */ } }
 
-    fun getUsername(): LiveData<String> {
-        return username
+    private val mutableRememberMe = MutableLiveData<Boolean>().apply { value = false }
+    val rememberMe = MediatorLiveData<Boolean>().apply {
+        addSource(mutableRememberMe) { value ->
+            setValue(value)
+        }
+    }.also { it.observeForever { /* empty */ } }
+
+    private val mutableEnableLogin = MutableLiveData<String>().apply { value = "fuck" }
+    val enableLogin = MediatorLiveData<String>().apply {
+        addSource(mutableEnableLogin) { value ->
+            setValue(value)
+        }
+    }.also { it.observeForever { /* empty */ } }
+
+    //
+    fun isUserInfoValid(): Boolean {
+        return !(password.value.toString() == "" || username.value.toString() == "")
     }
 
-    fun getPassword(): LiveData<String> {
-        return password
+    fun isRememberMe(): Boolean {
+        return rememberMe.value!!
     }
-
-    fun getRememberMe(): LiveData<Boolean> {
-        return rememberMe
-    }
-
-
-//
-//    fun setPassword(pass: String) {
-//        password.value = pass
-//    }
-//
-//
-//    fun setEnablelogin(enableString: String) {
-//        enableLogin.value = enableString
-//    }
-//
-////    @Bindable
-//    fun getUsername(): String {
-//        return username.value.toString()
-//    }
-//
-////    @Bindable
-//    fun getPassword(): String {
-//        return password.value.toString()
-//    }
-//
-////    @Bindable
-//    fun getEnableLogin(): String {
-//        return enableLogin.value.toString()
-//    }
-//
-////    @Bindable
-//    fun getRememberMe(): Boolean? {
-//        return rememberMe.value
-//    }
-
-//    fun onClick() {
-////        if (username.value == null || password.value == null)
-//
-//            _enableLogin.postValue(getUsername().value)
-////        else
-////            enableLogin.postValue(  "Good to go")
-//    }
-
 }

@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 class LoginActivity : AppCompatActivity() {
 
     val model: LoginViewModel by lazy {
-        ViewModelProviders.of(this, ViewModelFactory {LoginViewModel()}).get(LoginViewModel::class.java)
+        ViewModelProviders.of(this, ViewModelFactory { LoginViewModel() }).get(LoginViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,22 +23,24 @@ class LoginActivity : AppCompatActivity() {
         val binding: ActivityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.viewmodel = model
         binding.lifecycleOwner = this
+        init()
 
-        //TODO: find a way to access EditText value via data binding
+    }
+
+    fun init() {
         btn_login_button.setOnClickListener {
-            showLoginInvalidMessage()
-
+            if (!model.isUserInfoValid()) {
+                Toast.makeText(this, getString(R.string.login_error_empty_username_or_password), Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                rememberUser()
+            }
         }
     }
 
-    fun showLoginInvalidMessage() {
-        if (ed_username.text.toString() == "" || ed_password.text.toString() == "" )
-            Toast.makeText(this, getString(R.string.login_error_empty_username_or_password), Toast.LENGTH_SHORT).show()
-        return
-    }
 
     fun rememberUser() {
-        if (cb_remember_me.isChecked) {
+        if (model.isRememberMe()) {
             storeUserInfoIntoCache()
         }
     }
@@ -46,7 +48,6 @@ class LoginActivity : AppCompatActivity() {
     //TODO: store user info into cache
     fun storeUserInfoIntoCache() {
     }
-
 
 
 }

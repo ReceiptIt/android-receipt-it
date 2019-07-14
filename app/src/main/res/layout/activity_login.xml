@@ -27,7 +27,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/ed_username"
-                    android:text="@{viewmodel.username}"/>
+                    android:text="@={viewmodel.username}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/ed_password"
                     android:inputType="textPassword"
-                    android:text="@{viewmodel.password}"/>
+                    android:text="@={viewmodel.password}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -59,14 +59,21 @@
                 android:text="@string/login_button"/>
 
         <CheckBox
-                  android:layout_width="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cb_remember_me"
+                android:layout_marginStart="@dimen/margin_left"
+                app:layout_constraintTop_toBottomOf="@id/tl_password_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:text="@string/login_remember_me"
+                android:checked="@={viewmodel.rememberMe}"/>
+
+        <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:id="@+id/cb_remember_me"
-                  android:layout_marginStart="@dimen/margin_left"
-                  app:layout_constraintTop_toBottomOf="@id/tl_password_layout"
+                  app:layout_constraintRight_toRightOf="parent"
+                  app:layout_constraintTop_toBottomOf="@id/btn_login_button"
                   app:layout_constraintLeft_toLeftOf="parent"
-                  android:text="@string/login_remember_me"
-                  android:checked="@{viewmodel.rememberMe}"/>
+                  android:text="@={viewmodel.enableLogin}"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
