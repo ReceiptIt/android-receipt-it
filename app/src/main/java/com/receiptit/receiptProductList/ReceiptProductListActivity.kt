@@ -16,6 +16,7 @@ class ReceiptProductListActivity : AppCompatActivity(), ReceiptProductListRecycl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receipt_product_list)
+        title = getString(R.string.receipt_product_list_activity)
 
         val recyclerView = rv_receipt_product_list
         recyclerView.layoutManager = LinearLayoutManager(this)
