@@ -26,4 +26,14 @@
     <string name="receipt_product_list_receipt_info_comment">Receipt Comment</string>
     <string name="receipt_product_list_product_info_description">Product Description</string>
 
+    <!--product-->
+    <string name="product_activity">Edit Product</string>
+    <string name="product_header">Product Info</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_quantity">Quantity</string>
+    <string name="product_price">Price</string>
+    <string name="product_currency">Currency Code</string>
+    <string name="product_description">Product Description</string>
+
+
 </resources>

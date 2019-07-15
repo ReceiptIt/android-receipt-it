@@ -101,17 +101,17 @@ class ReceiptProductListRecyclerViewAdapter(
 
     class ReceiptProductListReceiptInfoViewHolder(itemView: View) : ReceiptProductListViewHolder(itemView) {
         private val edReceiptInfoMerchant: EditText =
-            itemView.findViewById(R.id.ed_receipt_product_list_receipt_info_merchant_value)
+            itemView.findViewById(R.id.ed_product_name_value)
         private val edReceiptInfoPostcode: EditText =
-            itemView.findViewById(R.id.ed_receipt_product_list_receipt_info_postcode_value)
+            itemView.findViewById(R.id.ed_product_quantity_value)
         private val edReceiptInfoTotalAmount: EditText =
-            itemView.findViewById(R.id.ed_receipt_product_list_receipt_info_total_amount_value)
+            itemView.findViewById(R.id.ed_product_currency_value)
         private var edReceiptInfoCurrency: EditText =
             itemView.findViewById(R.id.ed_receipt_product_list_receipt_info_currency_value)
         private var edReceiptInfoPurchasedDate: EditText =
-            itemView.findViewById(R.id.ed_receipt_product_list_receipt_info_purchase_date_value)
+            itemView.findViewById(R.id.ed_product_price_value)
         private var edReceiptInfoComment: EditText =
-            itemView.findViewById(R.id.ed_receipt_product_list_receipt_info_comment_value)
+            itemView.findViewById(R.id.ed_product_description_value)
 
         override fun bind(info: ReceiptProductListItem) {
             val receiptInfo = info as ReceiptProductListReceiptInfo

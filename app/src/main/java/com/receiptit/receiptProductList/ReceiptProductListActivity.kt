@@ -1,11 +1,13 @@
 package com.receiptit.receiptProductList
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.receiptit.R
 import com.receiptit.model.ReceiptProductItem
 import com.receiptit.model.ReceiptProducts
+import com.receiptit.product.ProductActivity
 import kotlinx.android.synthetic.main.activity_receipt_product_list.*
 
 import java.util.*
@@ -31,6 +33,6 @@ class ReceiptProductListActivity : AppCompatActivity(), ReceiptProductListRecycl
     }
 
     override fun onReceiptProductListItemClick() {
-
+        startActivity(Intent(this, ProductActivity::class.java))
     }
 }

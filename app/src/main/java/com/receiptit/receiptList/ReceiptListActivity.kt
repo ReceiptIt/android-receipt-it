@@ -21,11 +21,6 @@ class ReceiptListActivity : AppCompatActivity(), ReceiptListRecyclerViewAdapter.
         setSupportActionBar(toolbar)
         title = getString(R.string.receipt_list_activity)
 
-//        fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//        }
-
         val recyclerView = rv_receipt_list
         recyclerView.layoutManager = LinearLayoutManager(this)
 
