@@ -19,7 +19,6 @@ class ProductActivity : AppCompatActivity() {
 
     fun init() {
         var item = ReceiptProductItem("Peach", 3, 10.20, Currency.getInstance("CAD"), "test2")
-
         ed_product_name_value.hint = item.productName
         ed_product_quantity_value.hint = item.quantity.toString()
         ed_product_price_value.hint = item.price.toString()
