@@ -1,7 +1,6 @@
 package com.receiptit.services
 
 import android.text.TextUtils
-import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -9,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ServiceGenerator {
 
-    private const val API_BASE_URL = Constant.BASE_URL
+    private const val API_BASE_URL = NetworkConstant.BASE_URL
     private var authToken: String? = null
 
     private val httpClient = OkHttpClient.Builder()
@@ -21,24 +20,10 @@ object ServiceGenerator {
     private var retrofit = builder.build()
 
     fun <S> createService(serviceClass: Class<S>): S {
-        return createService(serviceClass, null, null)
+        return createService(serviceClass, authToken)
     }
 
-
-    fun <S> createService(
-        serviceClass: Class<S>, username: String?, password: String?
-    ): S {
-        if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
-            val authToken = Credentials.basic(username, password)
-            return createService(serviceClass, authToken)
-        }
-
-        return createService(serviceClass, null)
-    }
-
-    fun <S> createService(
-        serviceClass: Class<S>, authToken: String?
-    ): S {
+    private fun <S> createService(serviceClass: Class<S>, authToken: String?): S {
         if (!TextUtils.isEmpty(authToken)) {
             val interceptor = authToken?.let { AuthenticationInterceptor(it) }
 
