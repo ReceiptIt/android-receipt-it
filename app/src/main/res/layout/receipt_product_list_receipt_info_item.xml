@@ -19,116 +19,242 @@
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:id="@+id/tv_receipt_product_list_receipt_info_merchant_label"
+                  android:id="@+id/tv_receipt_product_list_header"
+                  android:textSize="16sp"
+                  android:textStyle="bold"
+                  app:layout_constraintTop_toTopOf="parent"
                   app:layout_constraintLeft_toLeftOf="parent"
                   app:layout_constraintRight_toRightOf="parent"
                   app:layout_constraintHorizontal_bias="0.1"
-                  app:layout_constraintTop_toTopOf="parent"
+                  android:layout_marginTop="@dimen/margin_small"
+                  android:text="@string/receipt_product_list_receipt_info_header"/>
+
+        <View android:layout_width="0dp"
+              app:layout_constraintWidth_percent="0.9"
+              android:layout_height="1dp"
+              android:id="@+id/v_receipt_product_list_receipt_info_header_divider"
+              android:background="@android:color/darker_gray"
+              app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_header"
+              app:layout_constraintRight_toRightOf="parent"
+              android:layout_marginEnd="@dimen/margin_medium"
+              app:layout_constraintTop_toBottomOf="@id/tv_receipt_product_list_header"
+              android:layout_marginTop="@dimen/margin_small"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/tv_receipt_product_list_receipt_info_merchant_label"
+                  app:layout_constraintLeft_toLeftOf="parent"
+                  app:layout_constraintRight_toLeftOf="@id/tl_receipt_product_list_receipt_info_merchant_layout"
+                  app:layout_constraintHorizontal_bias="0.2"
+                  app:layout_constraintTop_toTopOf="@id/tl_receipt_product_list_receipt_info_merchant_layout"
+                  app:layout_constraintBottom_toBottomOf="@id/tl_receipt_product_list_receipt_info_merchant_layout"
                   android:textSize="16sp"
                   android:text="@string/receipt_product_list_receipt_info_merchant"
                   tools:text="test"/>
 
-        <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/ed_receipt_product_list_receipt_info_merchant_value"
-                  app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_merchant_label"
-                  app:layout_constraintRight_toRightOf="parent"
-                  app:layout_constraintHorizontal_bias="0.8"
-                  app:layout_constraintBottom_toBottomOf="@id/tv_receipt_product_list_receipt_info_merchant_label"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.4"
+                android:layout_height="wrap_content"
+                android:id="@+id/tl_receipt_product_list_receipt_info_merchant_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintTop_toBottomOf="@id/v_receipt_product_list_receipt_info_header_divider"
+                android:layout_marginTop="@dimen/margin_small"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ed_receipt_product_list_receipt_info_merchant_value"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <View android:layout_width="0dp"
+              app:layout_constraintWidth_percent="0.9"
+              android:layout_height="1dp"
+              android:id="@+id/v_receipt_product_list_receipt_info_merchant_divider"
+              android:background="@android:color/darker_gray"
+              app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_header"
+              app:layout_constraintRight_toRightOf="parent"
+              android:layout_marginEnd="@dimen/margin_medium"
+              app:layout_constraintTop_toBottomOf="@id/tl_receipt_product_list_receipt_info_merchant_layout"
+              android:layout_marginTop="@dimen/margin_small"/>
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/tv_receipt_product_list_receipt_info_postcode_label"
-                  app:layout_constraintLeft_toLeftOf="parent"
-                  app:layout_constraintRight_toRightOf="parent"
-                  app:layout_constraintHorizontal_bias="0.1"
-                  app:layout_constraintTop_toBottomOf="@id/tv_receipt_product_list_receipt_info_merchant_label"
+                  app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_merchant_label"
+                  app:layout_constraintTop_toTopOf="@id/tl_receipt_product_list_receipt_info_postcode_layout"
+                  app:layout_constraintBottom_toBottomOf="@id/tl_receipt_product_list_receipt_info_postcode_layout"
                   android:textSize="16sp"
                   android:text="@string/receipt_product_list_receipt_info_post_code"
                   tools:text="test"/>
 
-        <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/ed_receipt_product_list_receipt_info_postcode_value"
-                  app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_postcode_label"
-                  app:layout_constraintRight_toRightOf="parent"
-                  app:layout_constraintHorizontal_bias="0.8"
-                  app:layout_constraintBottom_toBottomOf="@id/tv_receipt_product_list_receipt_info_postcode_label"/>
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.4"
+                android:layout_height="wrap_content"
+                android:id="@+id/tl_receipt_product_list_receipt_info_postcode_layout"
+                app:layout_constraintLeft_toLeftOf="@id/tl_receipt_product_list_receipt_info_merchant_layout"
+                app:layout_constraintTop_toBottomOf="@id/v_receipt_product_list_receipt_info_merchant_divider"
+                android:layout_marginTop="@dimen/margin_small"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ed_receipt_product_list_receipt_info_postcode_value"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <View android:layout_width="0dp"
+              app:layout_constraintWidth_percent="0.9"
+              android:layout_height="1dp"
+              android:id="@+id/v_receipt_product_list_receipt_info_postcode_divider"
+              android:background="@android:color/darker_gray"
+              app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_header"
+              app:layout_constraintRight_toRightOf="parent"
+              android:layout_marginEnd="@dimen/margin_medium"
+              app:layout_constraintTop_toBottomOf="@id/tl_receipt_product_list_receipt_info_postcode_layout"
+              android:layout_marginTop="@dimen/margin_small"/>
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/tv_receipt_product_list_receipt_info_purchase_date_label"
-                  app:layout_constraintLeft_toLeftOf="parent"
-                  app:layout_constraintRight_toRightOf="parent"
-                  app:layout_constraintHorizontal_bias="0.1"
-                  app:layout_constraintTop_toBottomOf="@id/tv_receipt_product_list_receipt_info_postcode_label"
+                  app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_postcode_label"
+                  app:layout_constraintTop_toTopOf="@id/tl_receipt_product_list_receipt_info_purchase_date_layout"
+                  app:layout_constraintBottom_toBottomOf="@id/tl_receipt_product_list_receipt_info_purchase_date_layout"
                   android:textSize="16sp"
                   android:text="@string/receipt_product_list_receipt_info_purchased_date"
                   tools:text="test"/>
 
-        <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/ed_receipt_product_list_receipt_info_purchase_date_value"
-                  app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_postcode_label"
-                  app:layout_constraintRight_toRightOf="parent"
-                  app:layout_constraintHorizontal_bias="0.8"
-                  app:layout_constraintBottom_toBottomOf="@id/tv_receipt_product_list_receipt_info_purchase_date_label"/>
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.4"
+                android:layout_height="wrap_content"
+                android:id="@+id/tl_receipt_product_list_receipt_info_purchase_date_layout"
+                app:layout_constraintLeft_toLeftOf="@id/tl_receipt_product_list_receipt_info_postcode_layout"
+                app:layout_constraintTop_toBottomOf="@id/v_receipt_product_list_receipt_info_postcode_divider"
+                android:layout_marginTop="@dimen/margin_small"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ed_receipt_product_list_receipt_info_purchase_date_value"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <View android:layout_width="0dp"
+              app:layout_constraintWidth_percent="0.9"
+              android:layout_height="1dp"
+              android:id="@+id/v_receipt_product_list_receipt_info_purchase_date_divider"
+              android:background="@android:color/darker_gray"
+              app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_header"
+              app:layout_constraintRight_toRightOf="parent"
+              android:layout_marginEnd="@dimen/margin_medium"
+              app:layout_constraintTop_toBottomOf="@id/tl_receipt_product_list_receipt_info_purchase_date_layout"
+              android:layout_marginTop="@dimen/margin_small"/>
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/tv_receipt_product_list_receipt_info_total_amount_label"
-                  app:layout_constraintLeft_toLeftOf="parent"
-                  app:layout_constraintRight_toRightOf="parent"
-                  app:layout_constraintHorizontal_bias="0.1"
-                  app:layout_constraintTop_toBottomOf="@id/tv_receipt_product_list_receipt_info_purchase_date_label"
+                  app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_purchase_date_label"
+                  app:layout_constraintTop_toTopOf="@id/tl_receipt_product_list_receipt_info_total_amount_layout"
+                  app:layout_constraintBottom_toBottomOf="@id/tl_receipt_product_list_receipt_info_total_amount_layout"
                   android:textSize="16sp"
                   android:text="@string/receipt_product_list_receipt_info_total_amount"
                   tools:text="test"/>
 
-        <EditText android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/ed_receipt_product_list_receipt_info_total_amount_value"
-                  app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_postcode_label"
-                  app:layout_constraintRight_toRightOf="parent"
-                  app:layout_constraintHorizontal_bias="0.8"
-                  app:layout_constraintBottom_toBottomOf="@id/tv_receipt_product_list_receipt_info_total_amount_label"/>
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.4"
+                android:layout_height="wrap_content"
+                android:id="@+id/tl_receipt_product_list_receipt_info_total_amount_layout"
+                app:layout_constraintLeft_toLeftOf="@id/tl_receipt_product_list_receipt_info_purchase_date_layout"
+                app:layout_constraintTop_toBottomOf="@id/v_receipt_product_list_receipt_info_purchase_date_divider"
+                android:layout_marginTop="@dimen/margin_small"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ed_receipt_product_list_receipt_info_total_amount_value"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View android:layout_width="0dp"
+              app:layout_constraintWidth_percent="0.9"
+              android:layout_height="1dp"
+              android:id="@+id/v_receipt_product_list_receipt_info_total_amount_divider"
+              android:background="@android:color/darker_gray"
+              app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_header"
+              app:layout_constraintRight_toRightOf="parent"
+              android:layout_marginEnd="@dimen/margin_medium"
+              app:layout_constraintTop_toBottomOf="@id/tl_receipt_product_list_receipt_info_total_amount_layout"
+              android:layout_marginTop="@dimen/margin_small"/>
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/tv_receipt_product_list_receipt_info_currency_label"
-                  app:layout_constraintLeft_toLeftOf="parent"
-                  app:layout_constraintRight_toRightOf="parent"
-                  app:layout_constraintHorizontal_bias="0.1"
-                  app:layout_constraintTop_toBottomOf="@id/tv_receipt_product_list_receipt_info_total_amount_label"
+                  app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_total_amount_label"
+                  app:layout_constraintTop_toTopOf="@id/tl_receipt_product_list_receipt_info_currency_layout"
+                  app:layout_constraintBottom_toBottomOf="@id/tl_receipt_product_list_receipt_info_currency_layout"
                   android:textSize="16sp"
                   android:text="@string/receipt_product_list_receipt_info_currency"
                   tools:text="test"/>
 
-        <EditText android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.4"
+                android:layout_height="wrap_content"
+                android:id="@+id/tl_receipt_product_list_receipt_info_currency_layout"
+                app:layout_constraintLeft_toLeftOf="@id/tl_receipt_product_list_receipt_info_total_amount_layout"
+                app:layout_constraintTop_toBottomOf="@id/v_receipt_product_list_receipt_info_total_amount_divider"
+                android:layout_marginTop="@dimen/margin_small"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ed_receipt_product_list_receipt_info_currency_value"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <View android:layout_width="0dp"
+              app:layout_constraintWidth_percent="0.9"
+              android:layout_height="1dp"
+              android:id="@+id/v_receipt_product_list_receipt_info_currency_divider"
+              android:background="@android:color/darker_gray"
+              app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_header"
+              app:layout_constraintRight_toRightOf="parent"
+              android:layout_marginEnd="@dimen/margin_medium"
+              app:layout_constraintTop_toBottomOf="@id/tl_receipt_product_list_receipt_info_currency_layout"
+              android:layout_marginTop="@dimen/margin_small"/>
+
+        <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:id="@+id/ed_receipt_product_list_receipt_info_currency_value"
-                  app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_postcode_label"
-                  app:layout_constraintRight_toRightOf="parent"
-                  app:layout_constraintHorizontal_bias="0.8"
-                  app:layout_constraintBottom_toBottomOf="@id/tv_receipt_product_list_receipt_info_currency_label"/>
+                  android:id="@+id/tv_receipt_product_list_receipt_info_comment_label"
+                  app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_total_amount_label"
+                  app:layout_constraintTop_toBottomOf="@id/v_receipt_product_list_receipt_info_currency_divider"
+                  android:layout_marginTop="@dimen/margin_small"
+                  android:textSize="16sp"
+                  android:text="@string/receipt_product_list_receipt_info_comment"
+                  tools:text="test"/>
 
-        <LinearLayout android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:orientation="vertical"
-                      app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_currency_label"
-                      app:layout_constraintTop_toBottomOf="@id/tv_receipt_product_list_receipt_info_currency_label">
+        <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.9"
+                android:layout_height="wrap_content"
+                android:id="@+id/tl_receipt_product_list_receipt_info_comment_layout"
+                app:layout_constraintLeft_toLeftOf="@id/tv_receipt_product_list_receipt_info_comment_label"
+                app:layout_constraintRight_toRightOf="@id/tl_receipt_product_list_receipt_info_currency_layout"
+                app:layout_constraintTop_toBottomOf="@id/tv_receipt_product_list_receipt_info_comment_label"
+                android:layout_marginTop="@dimen/margin_small"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ed_receipt_product_list_receipt_info_comment_value"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/tv_receipt_product_list_receipt_info_comment_label"
-                      android:textSize="16sp"
-                      android:text="@string/receipt_product_list_receipt_info_comment"
-                      tools:text="test"/>
-            <EditText android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/ed_receipt_product_list_receipt_info_comment_value"/>
-
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

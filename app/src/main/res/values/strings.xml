@@ -17,6 +17,7 @@
 
     <!--receipt product list-->
     <string name="receipt_product_list_activity">Product List</string>
+    <string name="receipt_product_list_receipt_info_header">Receipt Info</string>
     <string name="receipt_product_list_receipt_info_merchant">Merchant</string>
     <string name="receipt_product_list_receipt_info_post_code">Post Code</string>
     <string name="receipt_product_list_receipt_info_purchased_date">Purchased Date</string>
