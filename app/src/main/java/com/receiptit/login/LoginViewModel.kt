@@ -1,7 +1,15 @@
 package com.receiptit.login
 
+import android.view.View
 import androidx.lifecycle.*
+import com.receiptit.model.AuthenticationBody
+import com.receiptit.model.AuthenticationResponse
+import com.receiptit.services.AuthenticationApi
 import com.receiptit.singleLiveEvent.SingleLiveEvent
+import com.receiptit.services.ServiceGenerator
+import retrofit2.Call
+import retrofit2.Response
+
 
 /***
  * https://stackoverflow.com/questions/50876372/live-data-and-2-way-data-binding-custom-setter-not-being-called
@@ -9,14 +17,14 @@ import com.receiptit.singleLiveEvent.SingleLiveEvent
 
 class LoginViewModel : ViewModel() {
 
-    private val mutableUsername = MutableLiveData<String>().apply { value = "" }
+    private val mutableUsername = MutableLiveData<String>().apply { value = "testhjbawdjkda@test1.com" }
     val username = MediatorLiveData<String>().apply {
         addSource(mutableUsername) { value ->
             setValue(value)
         }
     }.also { it.observeForever { /* empty */ } }
 
-    private val mutablePassword = MutableLiveData<String>().apply { value = "" }
+    private val mutablePassword = MutableLiveData<String>().apply { value = "213131" }
     val password = MediatorLiveData<String>().apply {
         addSource(mutablePassword) { value ->
             setValue(value)
@@ -29,6 +37,8 @@ class LoginViewModel : ViewModel() {
             setValue(value)
         }
     }.also { it.observeForever { /* empty */ } }
+
+    val mutableProgressBarVisible = MutableLiveData<Int>().apply { value = View.GONE }
 
     /***
      * https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150
@@ -64,13 +74,27 @@ class LoginViewModel : ViewModel() {
     private fun storeUserInfoIntoCache() {
     }
 
-    //TODO: network request and progress bar
     private fun login() {
         rememberUser()
         //user login success
-        singleUserLoginSuccessEvent.call()
-        //user login fail
-//        singleUserLoginFailEvent.call()
+        mutableProgressBarVisible.value = View.VISIBLE
+        val loginService = ServiceGenerator.createAuthenticationService(AuthenticationApi::class.java)
+        val body = AuthenticationBody(username.value!!, password.value!!)
+        val call = loginService.login(body)
+
+        call.enqueue(object: retrofit2.Callback<AuthenticationResponse>{
+            override fun onFailure(call: Call<AuthenticationResponse>?, t: Throwable?) {
+                mutableProgressBarVisible.value = View.GONE
+                singleUserLoginFailEvent.call()
+            }
+
+            override fun onResponse(call: Call<AuthenticationResponse>?, response: Response<AuthenticationResponse>?) {
+                val result = response?.body()
+                result?.authToken?.let { ServiceGenerator.storeAuthToken(it) }
+                mutableProgressBarVisible.value = View.GONE
+                singleUserLoginSuccessEvent.call()
+            }
+        })
     }
 
     fun onClick() {

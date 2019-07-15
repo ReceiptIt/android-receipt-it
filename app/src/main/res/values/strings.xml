@@ -10,6 +10,7 @@
     <string name="login_error_empty_username_or_password">Username or password should not be empty!</string>
     <string name="login_error_authentication_fail">Login fail.</string>
     <string name="login_success">Login success.</string>
+    <string name="login_logging_in">Logging in......</string>
     <string name="title_activity_receipt_list">ReceiptListActivity</string>
 
     <!--receipt list-->
