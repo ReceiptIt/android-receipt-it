@@ -2,11 +2,14 @@ package com.receiptit.login
 
 import android.view.View
 import androidx.lifecycle.*
-import com.receiptit.model.LoginBody
-import com.receiptit.model.LoginResponse
-import com.receiptit.services.AuthenticationApi
+import com.receiptit.network.model.LoginBody
+import com.receiptit.network.model.LoginResponse
+import com.receiptit.network.service.AuthenticationApi
 import com.receiptit.singleLiveEvent.SingleLiveEvent
-import com.receiptit.services.ServiceGenerator
+import com.receiptit.network.ServiceGenerator
+import com.receiptit.network.retrofit.ResponseErrorBody
+import com.receiptit.network.retrofit.RetrofitCallback
+import com.receiptit.network.retrofit.RetrofitCallbackListener
 import retrofit2.Call
 import retrofit2.Response
 
@@ -40,6 +43,9 @@ class LoginViewModel : ViewModel() {
 
     val mutableProgressBarVisible = MutableLiveData<Int>().apply { value = View.GONE }
 
+    val mutableErrorMessage = MutableLiveData<String>()
+//    val errorMessage: LiveData<String> = mutableErrorMessage
+
     /***
      * https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150
      */
@@ -70,6 +76,14 @@ class LoginViewModel : ViewModel() {
         }
     }
 
+//    fun getErrorMessage(): String {
+//        return this.mutableErrorMessage.value.toString()
+//    }
+//
+    private fun setErrorMessage(message: String) {
+        mutableErrorMessage.value = message
+    }
+
     //TODO: store user info into cache
     private fun storeUserInfoIntoCache() {
     }
@@ -80,20 +94,27 @@ class LoginViewModel : ViewModel() {
         val authenticationService = ServiceGenerator.createAuthenticationService(AuthenticationApi::class.java)
         val body = LoginBody(username.value!!, password.value!!)
         val call = authenticationService.login(body)
-
-        call.enqueue(object: retrofit2.Callback<LoginResponse>{
+        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>?, t: Throwable?) {
                 mutableProgressBarVisible.value = View.GONE
+                t?.message?.let { setErrorMessage(it) }
                 singleUserLoginFailEvent.call()
             }
 
-            override fun onResponse(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
+            override fun onResponseSuccess(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
                 val result = response?.body()
                 result?.authToken?.let { ServiceGenerator.storeAuthToken(it) }
                 mutableProgressBarVisible.value = View.GONE
                 singleUserLoginSuccessEvent.call()
             }
-        })
+
+            override fun onResponseError(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
+                mutableProgressBarVisible.value = View.GONE
+                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
+                message?.getErrorMessage()?.let { setErrorMessage(it) }
+                singleUserLoginFailEvent.call()
+            }
+        }))
     }
 
     fun onClick() {

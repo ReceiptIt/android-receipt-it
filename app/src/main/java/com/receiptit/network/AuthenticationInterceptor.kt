@@ -1,4 +1,4 @@
-package com.receiptit.services
+package com.receiptit.network
 
 import okhttp3.Interceptor
 import okhttp3.Response

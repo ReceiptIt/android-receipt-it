@@ -1,4 +1,4 @@
-package com.receiptit.services
+package com.receiptit.network
 
 import android.text.TextUtils
 import okhttp3.OkHttpClient

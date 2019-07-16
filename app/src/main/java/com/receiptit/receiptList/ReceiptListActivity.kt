@@ -1,25 +1,15 @@
 package com.receiptit.receiptList
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.receiptit.R
-import com.receiptit.model.ReceiptListItem
-import com.receiptit.model.UserInfoResponse
+import com.receiptit.network.model.ReceiptListItem
 import com.receiptit.receiptProductList.ReceiptProductListActivity
-import com.receiptit.services.ServiceGenerator
-import com.receiptit.services.UserApi
 
 import kotlinx.android.synthetic.main.activity_receipt_list.*
 import kotlinx.android.synthetic.main.content_receipt_list.*
-import retrofit2.Call
-import retrofit2.Response
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -36,8 +26,24 @@ class ReceiptListActivity : AppCompatActivity(), ReceiptListRecyclerViewAdapter.
 
         //sample input
         var list = ArrayList<ReceiptListItem>()
-        list.add(ReceiptListItem("Costo", "110AAA", Currency.getInstance("USD"), 10.03, Date()))
-        list.add(ReceiptListItem("Uwaterloo", "220123", Currency.getInstance("CAD"), 120.80, Date()))
+        list.add(
+            ReceiptListItem(
+                "Costo",
+                "110AAA",
+                Currency.getInstance("USD"),
+                10.03,
+                Date()
+            )
+        )
+        list.add(
+            ReceiptListItem(
+                "Uwaterloo",
+                "220123",
+                Currency.getInstance("CAD"),
+                120.80,
+                Date()
+            )
+        )
 
         val adapter = ReceiptListRecyclerViewAdapter(list, this)
         recyclerView.adapter = adapter

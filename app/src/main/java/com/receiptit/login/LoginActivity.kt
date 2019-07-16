@@ -39,9 +39,9 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, ReceiptListActivity::class.java))
         })
 
-        model.userLoginFailEvent.observe(this, Observer {
-            Toast.makeText(this, getString(R.string.login_error_authentication_fail), Toast.LENGTH_SHORT)
-                .show()
+        model.mutableErrorMessage.observe(this, Observer {
+            Toast.makeText(this, getString(R.string.login_error_authentication_fail) + ": " + it,
+                Toast.LENGTH_SHORT).show()
         })
     }
 

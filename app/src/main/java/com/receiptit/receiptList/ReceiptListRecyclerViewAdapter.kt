@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.receiptit.R
-import com.receiptit.model.ReceiptListItem
+import com.receiptit.network.model.ReceiptListItem
 import java.text.SimpleDateFormat
 
 class ReceiptListRecyclerViewAdapter(private val list: List<ReceiptListItem>, private var mOnReceiptListItemClickListener: onReceiptListItemClickListerner): RecyclerView.Adapter<ReceiptListRecyclerViewAdapter.ReceiptListItemViewHolder>()  {

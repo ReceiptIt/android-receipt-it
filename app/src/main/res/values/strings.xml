@@ -8,7 +8,7 @@
     <string name="login_button">login</string>
     <string name="login_remember_me">Remember me</string>
     <string name="login_error_empty_username_or_password">Username or password should not be empty!</string>
-    <string name="login_error_authentication_fail">Login fail.</string>
+    <string name="login_error_authentication_fail">Login fail</string>
     <string name="login_success">Login success.</string>
     <string name="login_logging_in">Logging in......</string>
     <string name="title_activity_receipt_list">ReceiptListActivity</string>
@@ -35,6 +35,9 @@
     <string name="product_price">Price</string>
     <string name="product_currency">Currency Code</string>
     <string name="product_description">Product Description</string>
+
+    <!--retrofit-->
+    <string name="network_error_unauthorized">Token unauthorized. Please login again!</string>
 
 
 </resources>
