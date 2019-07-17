@@ -1,10 +1,8 @@
 package com.receiptit.network.service
 
 import com.receiptit.network.model.SimpleResponse
+import com.receiptit.network.model.receipt.*
 import retrofit2.Call
-import com.receiptit.network.model.receipt.ReceiptCreateBody
-import com.receiptit.network.model.receipt.ReceiptCreateResponse
-import com.receiptit.network.model.receipt.UserReceiptsRetrieveResponse
 import retrofit2.http.*
 
 interface ReceiptApi {
@@ -18,7 +16,10 @@ interface ReceiptApi {
     @DELETE("/receipt/{receiptId}")
     fun deleteReceipt(@Path("receiptId") receiptId: Int): Call<SimpleResponse>
 
-    @GET("/receiptId/{receiptId}")
-    fun getReceiptProducts(@Path("receiptId") receiptId: Int): Call<>_
+    @GET("/receipt/{receiptId}")
+    fun getReceiptProducts(@Path("receiptId") receiptId: Int): Call<ReceiptProductsResponse>
+
+    @PUT("/receipt/{receiptId}")
+    fun updateReceipt(@Path("receiptId") receiptId: Int, @Body body: ReceiptUpdateBody): Call<SimpleResponse>
 
 }
