@@ -1,4 +1,4 @@
-package com.receiptit.singleLiveEvent;
+package com.receiptit.util;
 
 /***
  * https://github.com/googlesamples/android-architecture/blob/dev-todo-mvvm-live/todoapp/app/src/main/java/com/example/android/architecture/blueprints/todoapp/SingleLiveEvent.java

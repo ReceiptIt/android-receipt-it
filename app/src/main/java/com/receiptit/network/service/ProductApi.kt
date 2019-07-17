@@ -11,7 +11,7 @@ interface ProductApi {
     fun getProduct(@Path("productId") productId: Int): Call<ProductInfo>
 
     @GET("/product")
-    fun getProductFromReceipt(@Query("receiptId") receiptId: Int): Call<ProductFromReceiptResponse>
+    fun getProductsFromReceipt(@Query("receiptId") receiptId: Int): Call<ProductFromReceiptResponse>
 
     @POST("/product")
     fun createProduct(@Body body: ProductCreateBody): Call<ProductCreateResponse>

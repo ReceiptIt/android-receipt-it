@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Receipt It</string>
+    <!-- right now, the app only supports CAD-->
+    <string name="currency_code">CAD</string>
 
     <!--Login-->
     <string name="login_activity">Login</string>
@@ -15,6 +17,7 @@
 
     <!--receipt list-->
     <string name="receipt_list_activity">Receipt List</string>
+    <string name="receipt_list_retrieve_error">Receipt list retrieved error: </string>
 
     <!--receipt product list-->
     <string name="receipt_product_list_activity">Product List</string>
@@ -26,6 +29,7 @@
     <string name="receipt_product_list_receipt_info_currency">Currency Code</string>
     <string name="receipt_product_list_receipt_info_comment">Receipt Comment</string>
     <string name="receipt_product_list_product_info_description">Product Description</string>
+    <string name="receipt_product_list_retrieve_error">Receipt Product list retrieved error: </string>
 
     <!--product-->
     <string name="product_activity">Edit Product</string>
@@ -35,6 +39,7 @@
     <string name="product_price">Price</string>
     <string name="product_currency">Currency Code</string>
     <string name="product_description">Product Description</string>
+    <string name="product_retrieve_error">Product retrieved error: </string>
 
     <!--retrofit-->
     <string name="network_error_unauthorized">Token unauthorized. Please login again!</string>

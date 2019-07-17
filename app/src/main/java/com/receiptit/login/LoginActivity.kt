@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
         ViewModelProviders.of(this, ViewModelFactory { LoginViewModel() }).get(LoginViewModel::class.java)
     }
 
-    private val USER_ID: String = "USER_ID"
+    private val USER_ID = "USER_ID"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

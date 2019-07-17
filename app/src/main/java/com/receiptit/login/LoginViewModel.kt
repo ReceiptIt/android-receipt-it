@@ -5,7 +5,7 @@ import androidx.lifecycle.*
 import com.receiptit.network.model.authentication.LoginBody
 import com.receiptit.network.model.authentication.LoginResponse
 import com.receiptit.network.service.AuthenticationApi
-import com.receiptit.singleLiveEvent.SingleLiveEvent
+import com.receiptit.util.SingleLiveEvent
 import com.receiptit.network.ServiceGenerator
 import com.receiptit.network.retrofit.ResponseErrorBody
 import com.receiptit.network.retrofit.RetrofitCallback
@@ -20,14 +20,14 @@ import retrofit2.Response
 
 class LoginViewModel : ViewModel() {
 
-    private val mutableUsername = MutableLiveData<String>().apply { value = "testhjbawdjkda@test1.com" }
+    private val mutableUsername = MutableLiveData<String>().apply { value = "fuyono@gmail.com" }
     val username = MediatorLiveData<String>().apply {
         addSource(mutableUsername) { value ->
             setValue(value)
         }
     }.also { it.observeForever { /* empty */ } }
 
-    private val mutablePassword = MutableLiveData<String>().apply { value = "213131" }
+    private val mutablePassword = MutableLiveData<String>().apply { value = "password" }
     val password = MediatorLiveData<String>().apply {
         addSource(mutablePassword) { value ->
             setValue(value)

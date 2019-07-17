@@ -7,13 +7,14 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.receiptit.R
-import com.receiptit.network.model.receipt.ReceiptProducts
-import java.text.SimpleDateFormat
+import com.receiptit.network.model.receipt.ReceiptProductsResponse
+import com.receiptit.util.StringResourceManager
+import com.receiptit.util.TimeStringFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ReceiptProductListRecyclerViewAdapter(
-    product: ReceiptProducts,
+    product: ReceiptProductsResponse,
     private var mOnReceiptListItemClickListener: onReceiptProductListItemClickListerner
 ) : RecyclerView.Adapter<ReceiptProductListRecyclerViewAdapter.ReceiptProductListViewHolder>() {
 
@@ -26,7 +27,7 @@ class ReceiptProductListRecyclerViewAdapter(
     }
 
     interface onReceiptProductListItemClickListerner {
-        fun onReceiptProductListItemClick()
+        fun onReceiptProductListItemClick(productId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReceiptProductListViewHolder {
@@ -68,29 +69,30 @@ class ReceiptProductListRecyclerViewAdapter(
     abstract class ReceiptProductListItem(var viewType: ReceiptProductListViewType)
 
     class ReceiptProductListReceiptInfo(
-        var merchant: String, var postcode: String, var purchaseDate: Date,
-        var totalAmount: Double, var currency: Currency, var comment: String
+        var merchant: String, var postcode: String, var purchaseDate: String,
+        var totalAmount: Double, var currency: String, var comment: String?
     ) :
         ReceiptProductListItem(ReceiptProductListViewType.RECEIPT_INFO)
 
     class ReceiptProductListProductInfo(
-        var productName: String, var quantity: Int, var price: Double,
-        var currency: Currency, var description: String
+        var productId: Int, var productName: String, var quantity: Int, var price: Double,
+        var currency: Currency, var description: String?
     ) :
         ReceiptProductListItem(ReceiptProductListViewType.PRODUCT_INFO)
 
-    private fun processProducts(product: ReceiptProducts): ArrayList<ReceiptProductListItem> {
+    private fun processProducts(product: ReceiptProductsResponse): ArrayList<ReceiptProductListItem> {
         val list = ArrayList<ReceiptProductListItem>()
-
+        val currencyCode = StringResourceManager.getDefaultCurrencyCode()
         list.add(
             ReceiptProductListReceiptInfo(
-                product.merchant, product.postcode, product.purchaseDate, product.totalAmount,
-                product.currency, product.comment
+                product.merchant, product.postcode, product.purchase_date, product.total_amount,
+                currencyCode, product.comment
             )
         )
 
-        product.productList.forEach {
-            list.add(ReceiptProductListProductInfo(it.productName, it.quantity, it.price, it.currency, it.description))
+        product.products.forEach {
+            list.add(ReceiptProductListProductInfo(it.product_id, it.name, it.quantity, it.price, it.currency_code,
+                it.description))
         }
         return list
     }
@@ -118,19 +120,14 @@ class ReceiptProductListRecyclerViewAdapter(
             edReceiptInfoMerchant.hint = receiptInfo.merchant
             edReceiptInfoPostcode.hint = receiptInfo.postcode
             edReceiptInfoTotalAmount.hint = receiptInfo.totalAmount.toString()
-            edReceiptInfoCurrency.hint = receiptInfo.currency.currencyCode
-
-            val pattern = "yyyy-MM-dd"
-            val formatter = SimpleDateFormat(pattern)
-            val purchasedDate = formatter.format(receiptInfo.purchaseDate)
-            edReceiptInfoPurchasedDate.hint = purchasedDate
-
+            edReceiptInfoCurrency.hint = receiptInfo.currency
+            edReceiptInfoPurchasedDate.hint = TimeStringFormatter.format(receiptInfo.purchaseDate)
             edReceiptInfoComment.hint = receiptInfo.comment
         }
     }
 
 
-    class ReceiptProductListProductInfoViewHolder(itemView: View, listener: onReceiptProductListItemClickListerner) :
+    class ReceiptProductListProductInfoViewHolder(itemView: View, var listener: onReceiptProductListItemClickListerner) :
         ReceiptProductListViewHolder(itemView) {
         private val tvProductInfoProductName: TextView =
             itemView.findViewById(R.id.tv_receipt_product_list_product_info_product_name)
@@ -143,12 +140,6 @@ class ReceiptProductListRecyclerViewAdapter(
         private var edProductInfoDescription: EditText =
             itemView.findViewById(R.id.ed_receipt_product_list_product_info_description_value)
 
-        init {
-            itemView.setOnClickListener {
-                listener.onReceiptProductListItemClick()
-            }
-        }
-
         override fun bind(info: ReceiptProductListItem) {
             val productInfo = info as ReceiptProductListProductInfo
             tvProductInfoProductName.text = productInfo.productName
@@ -156,6 +147,10 @@ class ReceiptProductListRecyclerViewAdapter(
             tvProductInfoPrice.text = productInfo.price.toString()
             tvProductInfoCurrency.text = productInfo.currency.currencyCode
             edProductInfoDescription.hint = productInfo.description
+
+            itemView.setOnClickListener {
+                listener.onReceiptProductListItemClick(productInfo.productId)
+            }
         }
     }
 
