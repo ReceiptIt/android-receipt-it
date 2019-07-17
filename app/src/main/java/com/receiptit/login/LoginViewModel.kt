@@ -2,8 +2,8 @@ package com.receiptit.login
 
 import android.view.View
 import androidx.lifecycle.*
-import com.receiptit.network.model.LoginBody
-import com.receiptit.network.model.LoginResponse
+import com.receiptit.network.model.authentication.LoginBody
+import com.receiptit.network.model.authentication.LoginResponse
 import com.receiptit.network.service.AuthenticationApi
 import com.receiptit.singleLiveEvent.SingleLiveEvent
 import com.receiptit.network.ServiceGenerator

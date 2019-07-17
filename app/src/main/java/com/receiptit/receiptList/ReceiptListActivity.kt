@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.receiptit.R
-import com.receiptit.network.model.ReceiptListItem
+import com.receiptit.network.model.receipt.ReceiptListItem
 import com.receiptit.receiptProductList.ReceiptProductListActivity
 
 import kotlinx.android.synthetic.main.activity_receipt_list.*
@@ -50,13 +50,13 @@ class ReceiptListActivity : AppCompatActivity(), ReceiptListRecyclerViewAdapter.
 
 //        val userService = ServiceGenerator.createService(UserApi::class.java)
 //        val call = userService.getUserInfo(1)
-//        call.enqueue(object: retrofit2.Callback<UserInfoResponse>{
-//            override fun onFailure(call: Call<UserInfoResponse>?, t: Throwable?) {
+//        call.enqueue(object: retrofit2.Callback<UserInfoRetrieveResponse>{
+//            override fun onFailure(call: Call<UserInfoRetrieveResponse>?, t: Throwable?) {
 //                Toast.makeText(applicationContext, "Fuck you", Toast.LENGTH_SHORT).show()
 //            }
 //
 //            @RequiresApi(Build.VERSION_CODES.O)
-//            override fun onResponse(call: Call<UserInfoResponse>?, response: Response<UserInfoResponse>?) {
+//            override fun onResponse(call: Call<UserInfoRetrieveResponse>?, response: Response<UserInfoRetrieveResponse>?) {
 //                val result = response?.body()
 //                val date = LocalDate.parse(result?.userInfo?.updatedAt, DateTimeFormatter.BASIC_ISO_DATE)
 //                println(date)

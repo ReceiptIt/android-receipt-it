@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.receiptit.R
-import com.receiptit.network.model.ReceiptProductItem
-import com.receiptit.network.model.ReceiptProducts
+import com.receiptit.network.model.receipt.ReceiptProductItem
+import com.receiptit.network.model.receipt.ReceiptProducts
 import com.receiptit.product.ProductActivity
 import kotlinx.android.synthetic.main.activity_receipt_product_list.*
 

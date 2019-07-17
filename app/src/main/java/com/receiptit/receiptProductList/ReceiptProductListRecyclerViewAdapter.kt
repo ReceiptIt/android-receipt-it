@@ -7,7 +7,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.receiptit.R
-import com.receiptit.network.model.ReceiptProducts
+import com.receiptit.network.model.receipt.ReceiptProducts
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

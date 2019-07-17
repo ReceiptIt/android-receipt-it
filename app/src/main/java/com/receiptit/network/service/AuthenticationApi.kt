@@ -1,8 +1,8 @@
 package com.receiptit.network.service
 
-import com.receiptit.network.model.LoginBody
-import com.receiptit.network.model.LoginResponse
-import com.receiptit.network.model.LogoutResponse
+import com.receiptit.network.model.authentication.LoginBody
+import com.receiptit.network.model.authentication.LoginResponse
+import com.receiptit.network.model.authentication.LogoutResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

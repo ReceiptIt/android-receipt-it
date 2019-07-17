@@ -1,4 +1,4 @@
-package com.receiptit.network.model
+package com.receiptit.network.model.user
 
 import java.util.*
 
