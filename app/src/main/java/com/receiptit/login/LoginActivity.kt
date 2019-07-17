@@ -19,6 +19,8 @@ class LoginActivity : AppCompatActivity() {
         ViewModelProviders.of(this, ViewModelFactory { LoginViewModel() }).get(LoginViewModel::class.java)
     }
 
+    private val USER_ID: String = "USER_ID"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         title = getString(R.string.login_activity)
@@ -38,8 +40,10 @@ class LoginActivity : AppCompatActivity() {
                 .show()
         })
 
-        model.userLoginSuccessEvent.observe(this, Observer {
-            startActivity(Intent(this, ReceiptListActivity::class.java))
+        model.mutableUserId.observe(this, Observer {
+            val intent = Intent(this, ReceiptListActivity::class.java)
+            intent.putExtra(USER_ID, it)
+            startActivity(intent)
         })
 
         model.mutableErrorMessage.observe(this, Observer {
