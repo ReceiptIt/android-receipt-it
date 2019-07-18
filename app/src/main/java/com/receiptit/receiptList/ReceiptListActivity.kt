@@ -1,11 +1,10 @@
 package com.receiptit.receiptList
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MotionEvent
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,11 +25,16 @@ import retrofit2.Call
 import retrofit2.Response
 
 class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClickListerner,
-    BaseNavigationDrawerActivity(){
+    BaseNavigationDrawerActivity(), AddReceiptFragment.OnAddReceiptFragmentCloseListener{
 
     private val USER_INFO = "USER_INFO"
     private val RECEIPT_ID = "RECEIPT_ID"
     private var userInfo : UserInfo? = null
+    private var isFragmentShow = false
+
+    private var fragment: AddReceiptFragment? = null
+
+    private var ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +43,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
         setSupportActionBar(toolbar)
         super.onCreateDrawer()
         title = getString(R.string.receipt_list_activity)
-        init()
+        refreshReceiptList()
     }
 
     override fun onReceiptListItemClick(receiptId: Int) {
@@ -59,7 +63,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
         Toast.makeText(this, getString(R.string.receipt_list_retrieve_error) + error, Toast.LENGTH_SHORT).show()
     }
 
-    private fun init() {
+    private fun refreshReceiptList() {
         userInfo = intent.getSerializableExtra(USER_INFO) as UserInfo
         val userId = userInfo?.user_id
         val receiptService = ServiceGenerator.createService(ReceiptApi::class.java)
@@ -90,6 +94,11 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResultUpdateUserInfo(requestCode, resultCode)
+        if (requestCode == ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY) {
+            if (resultCode == Activity.RESULT_OK) {
+                refreshReceiptList()
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -107,11 +116,26 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
 
     private fun showFragment() {
         supportActionBar?.hide()
+        fragment = userInfo?.let { AddReceiptFragment.newInstance(it)}
         val fm = supportFragmentManager
-        val fr = AddReceiptFragment()
         val fragmentTransaction = fm.beginTransaction()
-        fragmentTransaction.replace(R.id.fg_receipt_list_add_receipt, fr)
+        fragment?.let { fragmentTransaction.replace(R.id.fg_receipt_list_add_receipt, it)}
         fragmentTransaction.commit()
+        isFragmentShow = true
+    }
+
+    override fun onAddReceiptFragmentClose() {
+       if (isFragmentShow) {
+           fragment?.let { supportFragmentManager.beginTransaction().remove(it)}?.commit()
+           isFragmentShow = false
+           supportActionBar?.show()
+       }
+    }
+
+    override fun onAddReceiptManually() {
+        val intent = Intent(this, ManuallyCreateActivity::class.java)
+        intent.putExtra(USER_INFO, userInfo)
+        startActivityForResult(intent, ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY)
     }
 
 }

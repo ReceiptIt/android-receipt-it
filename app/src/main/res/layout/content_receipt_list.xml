@@ -7,7 +7,8 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_receipt_list"
-        tools:context=".receiptList.ReceiptListActivity">
+        tools:context=".receiptList.ReceiptListActivity"
+        android:id="@+id/cl_receipt_list_layout">
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
