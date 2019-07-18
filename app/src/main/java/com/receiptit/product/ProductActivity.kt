@@ -1,8 +1,8 @@
 package com.receiptit.product
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.receiptit.BaseNavigationDrawerActivity
 import com.receiptit.R
 import com.receiptit.network.ServiceGenerator
 import com.receiptit.network.model.product.ProductInfo
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.receipt_product_list_receipt_info_item.*
 import retrofit2.Call
 import retrofit2.Response
 
-class ProductActivity : AppCompatActivity() {
+class ProductActivity : BaseNavigationDrawerActivity() {
 
     private val PRODUCT_ID = "PRODUCT_ID"
 

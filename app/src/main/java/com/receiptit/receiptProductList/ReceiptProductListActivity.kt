@@ -1,10 +1,10 @@
 package com.receiptit.receiptProductList
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.receiptit.BaseNavigationDrawerActivity
 import com.receiptit.R
 import com.receiptit.network.ServiceGenerator
 import com.receiptit.network.model.receipt.ReceiptProductsResponse
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_receipt_product_list.*
 import retrofit2.Call
 import retrofit2.Response
 
-class ReceiptProductListActivity : AppCompatActivity(), ReceiptProductListRecyclerViewAdapter.onReceiptProductListItemClickListerner {
+class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ReceiptProductListRecyclerViewAdapter.onReceiptProductListItemClickListerner {
 
     private val RECEIPT_ID = "RECEIPT_ID"
     private val PRODUCT_ID = "PRODUCT_ID"
