@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
         ViewModelProviders.of(this, ViewModelFactory { LoginViewModel() }).get(LoginViewModel::class.java)
     }
 
-    private val USER_ID = "USER_ID"
+    private val USER_INFO = "USER_INFO"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +40,9 @@ class LoginActivity : AppCompatActivity() {
                 .show()
         })
 
-        model.mutableUserId.observe(this, Observer {
+        model.mutableUserInfo.observe(this, Observer {
             val intent = Intent(this, ReceiptListActivity::class.java)
-            intent.putExtra(USER_ID, it)
+            intent.putExtra(USER_INFO, it)
             startActivity(intent)
         })
 

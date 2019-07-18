@@ -17,7 +17,20 @@
 
     <!--receipt list-->
     <string name="receipt_list_activity">Receipt List</string>
-    <string name="receipt_list_retrieve_error">Receipt list retrieved error: </string>
+    <string name="receipt_list_retrieve_error">Receipt list retrieve error: </string>
+    <string name="receipt_list_edit_user">Edit User Profile</string>
+    <string name="receipt_list_user_info_error">User info retrieve error: </string>
+
+    <!--edit user-->
+    <string name="edit_user_header">User Information</string>
+    <string name="edit_user_email">Email</string>
+    <string name="edit_user_first_name">First Name</string>
+    <string name="edit_user_last_name">Last Name</string>
+    <string name="edit_user_password">New Password</string>
+    <string name="edit_user_password_confirm">Confirm New Password</string>
+    <string name="edit_user_password_confirm_hint">Type the new password again</string>
+    <string name="edit_user_error">Edit user information error: </string>
+    <string name="edit_user_password_invalid_error">Confirm Password is not the same as New Password.</string>
 
     <!--receipt product list-->
     <string name="receipt_product_list_activity">Product List</string>
@@ -29,7 +42,7 @@
     <string name="receipt_product_list_receipt_info_currency">Currency Code</string>
     <string name="receipt_product_list_receipt_info_comment">Receipt Comment</string>
     <string name="receipt_product_list_product_info_description">Product Description</string>
-    <string name="receipt_product_list_retrieve_error">Receipt Product list retrieved error: </string>
+    <string name="receipt_product_list_retrieve_error">Receipt Product list retrieved error:</string>
 
     <!--product-->
     <string name="product_activity">Edit Product</string>
@@ -39,10 +52,19 @@
     <string name="product_price">Price</string>
     <string name="product_currency">Currency Code</string>
     <string name="product_description">Product Description</string>
-    <string name="product_retrieve_error">Product retrieved error: </string>
+    <string name="product_retrieve_error">Product retrieved error:</string>
 
     <!--retrofit-->
     <string name="network_error_unauthorized">Token unauthorized. Please login again!</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_save">Save</string>
 
 
 </resources>

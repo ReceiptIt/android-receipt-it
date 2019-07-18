@@ -13,6 +13,6 @@ interface UserApi{
     @POST("/user")
     fun createUser(@Body body: UserCreateBody): Call<UserCreateResponse>
 
-    @PUT("/user/{userID}")
-    fun updateUserInfo(@Body body: UserUpdateBody? = null): Call<SimpleResponse>
+    @PUT("/user/{userId}")
+    fun updateUserInfo(@Path("userId") userId: Int, @Body body: UserUpdateBody? = null): Call<SimpleResponse>
 }

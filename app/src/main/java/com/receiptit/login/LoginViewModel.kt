@@ -7,6 +7,7 @@ import com.receiptit.network.model.authentication.LoginResponse
 import com.receiptit.network.service.AuthenticationApi
 import com.receiptit.util.SingleLiveEvent
 import com.receiptit.network.ServiceGenerator
+import com.receiptit.network.model.user.UserInfo
 import com.receiptit.network.retrofit.ResponseErrorBody
 import com.receiptit.network.retrofit.RetrofitCallback
 import com.receiptit.network.retrofit.RetrofitCallbackListener
@@ -20,14 +21,14 @@ import retrofit2.Response
 
 class LoginViewModel : ViewModel() {
 
-    private val mutableUsername = MutableLiveData<String>().apply { value = "fuyono@gmail.com" }
+    private val mutableUsername = MutableLiveData<String>().apply { value = "test@android.com" }
     val username = MediatorLiveData<String>().apply {
         addSource(mutableUsername) { value ->
             setValue(value)
         }
     }.also { it.observeForever { /* empty */ } }
 
-    private val mutablePassword = MutableLiveData<String>().apply { value = "password" }
+    private val mutablePassword = MutableLiveData<String>().apply { value = "test" }
     val password = MediatorLiveData<String>().apply {
         addSource(mutablePassword) { value ->
             setValue(value)
@@ -45,7 +46,7 @@ class LoginViewModel : ViewModel() {
 
     val mutableErrorMessage = MutableLiveData<String>()
 
-    val mutableUserId = MutableLiveData<Int>()
+    val mutableUserInfo = MutableLiveData<UserInfo>()
 
     /***
      * https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150
@@ -72,8 +73,8 @@ class LoginViewModel : ViewModel() {
         mutableErrorMessage.value = message
     }
 
-    private fun setUserId(id: Int) {
-        mutableUserId.value = id
+    private fun setUserInfo(info: UserInfo) {
+        mutableUserInfo.value = info
     }
 
     //TODO: store user info into cache
@@ -97,7 +98,7 @@ class LoginViewModel : ViewModel() {
                 result?.authToken?.let { ServiceGenerator.storeAuthToken(it) }
                 mutableProgressBarVisible.value = View.GONE
                 //TODO: retrieve user id from Api response
-                setUserId(1)
+                result?.userInfo?.let { setUserInfo(it) }
             }
 
             override fun onResponseError(call: Call<LoginResponse>?, response: Response<LoginResponse>?) {
