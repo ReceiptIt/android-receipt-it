@@ -2,6 +2,10 @@ package com.receiptit.receiptList
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,9 +35,9 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receipt_list_nav_layout)
-        super.onCreateDrawer()
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        super.onCreateDrawer()
         title = getString(R.string.receipt_list_activity)
         init()
     }
@@ -82,10 +86,32 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
             }
 
         }))
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResutUpdateUserInfo(requestCode, resultCode)
+        super.onActivityResultUpdateUserInfo(requestCode, resultCode)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_receipt_list, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.menu_receipt_list_add_receipt) {
+            showFragment()
+            true
+        } else
+            super.onOptionsItemSelected(item)
+    }
+
+    private fun showFragment() {
+        supportActionBar?.hide()
+        val fm = supportFragmentManager
+        val fr = AddReceiptFragment()
+        val fragmentTransaction = fm.beginTransaction()
+        fragmentTransaction.replace(R.id.fg_receipt_list_add_receipt, fr)
+        fragmentTransaction.commit()
+    }
+
 }

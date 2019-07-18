@@ -20,6 +20,10 @@
     <string name="receipt_list_retrieve_error">Receipt list retrieve error: </string>
     <string name="receipt_list_edit_user">Edit User Profile</string>
     <string name="receipt_list_user_info_error">User info retrieve error: </string>
+    <string name="receipt_list_add_receipt">Add a new receipt</string>
+    <string name="receipt_list_add_receipt_header">Add Receipt</string>
+    <string name="receipt_list_add_receipt_manually_create">Manually Create Receipt</string>
+    <string name="receipt_list_add_receipt_camera_scan">Scan Receipt</string>
 
     <!--edit user-->
     <string name="edit_user_header">User Information</string>

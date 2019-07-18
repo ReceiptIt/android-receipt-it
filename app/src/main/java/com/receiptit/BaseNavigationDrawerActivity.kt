@@ -46,7 +46,7 @@ abstract class BaseNavigationDrawerActivity : AppCompatActivity(), NavigationVie
         navView.setNavigationItemSelectedListener(this)
     }
 
-    protected fun onActivityResutUpdateUserInfo(requestCode: Int, resultCode: Int) {
+    protected fun onActivityResultUpdateUserInfo(requestCode: Int, resultCode: Int) {
         if (requestCode == ACTIVITY_RESULT_EDIT_USER_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 refreshUserInfo()
