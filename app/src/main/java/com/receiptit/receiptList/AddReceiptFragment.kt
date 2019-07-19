@@ -15,7 +15,6 @@ import com.receiptit.network.model.user.UserInfo
 class AddReceiptFragment : Fragment() {
 
     private var listener: OnAddReceiptFragmentCloseListener? = null
-    private var ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY = 2
     private var userInfo: UserInfo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

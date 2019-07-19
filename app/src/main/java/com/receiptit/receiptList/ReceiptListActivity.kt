@@ -23,6 +23,9 @@ import com.receiptit.receiptProductList.ReceiptProductListActivity
 import kotlinx.android.synthetic.main.content_receipt_list.*
 import retrofit2.Call
 import retrofit2.Response
+import androidx.appcompat.app.AlertDialog
+import com.receiptit.network.model.SimpleResponse
+
 
 class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClickListerner,
     BaseNavigationDrawerActivity(), AddReceiptFragment.OnAddReceiptFragmentCloseListener{
@@ -59,8 +62,12 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
         recyclerView.adapter = adapter
     }
 
-    private fun showReceiptListError(error: String){
+    private fun showGetReceiptListError(error: String){
         Toast.makeText(this, getString(R.string.receipt_list_retrieve_error) + error, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showDeleteReceiptListError(error: String){
+        Toast.makeText(this, getString(R.string.receipt_list_delete_receipt_error) + error, Toast.LENGTH_SHORT).show()
     }
 
     private fun refreshReceiptList() {
@@ -82,11 +89,11 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
                 response: Response<UserReceiptsRetrieveResponse>?
             ) {
                 val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
-                message?.getErrorMessage()?.let { showReceiptListError(it) }
+                message?.getErrorMessage()?.let { showGetReceiptListError(it) }
             }
 
             override fun onFailure(call: Call<UserReceiptsRetrieveResponse>?, t: Throwable?) {
-                t?.message?.let { showReceiptListError(it) }
+                t?.message?.let { showGetReceiptListError(it) }
             }
 
         }))
@@ -136,6 +143,41 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
         val intent = Intent(this, ManuallyCreateActivity::class.java)
         intent.putExtra(USER_INFO, userInfo)
         startActivityForResult(intent, ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY)
+    }
+
+    override fun onReceiptListItemLongClick(receiptId: Int) {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.receipt_list_delete_receipt_dialog_title))
+            .setMessage(getString(R.string.receipt_list_delete_receipt_dialog_message))
+            .setPositiveButton(android.R.string.yes) { _, _ ->
+                deleteReceipt(receiptId)
+            }
+
+            .setNegativeButton(android.R.string.no) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
+    }
+
+    private fun deleteReceipt(receiptId: Int) {
+        val receiptService = ServiceGenerator.createService(ReceiptApi::class.java)
+        val call = receiptService.deleteReceipt(receiptId)
+        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<SimpleResponse>{
+            override fun onResponseSuccess(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
+                refreshReceiptList()
+            }
+
+            override fun onResponseError(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
+                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
+                message?.getErrorMessage()?.let { showDeleteReceiptListError(it) }
+            }
+
+            override fun onFailure(call: Call<SimpleResponse>?, t: Throwable?) {
+                t?.message?.let { showDeleteReceiptListError(it) }
+            }
+
+        }))
     }
 
 }

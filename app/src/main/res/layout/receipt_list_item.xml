@@ -9,7 +9,10 @@
         android:layout_marginTop="@dimen/margin_tiny"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_small"
-        android:layout_marginBottom="@dimen/margin_tiny">
+        android:layout_marginBottom="@dimen/margin_tiny"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

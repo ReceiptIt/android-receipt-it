@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.receiptit.R
 import com.receiptit.network.model.receipt.ReceiptInfo
@@ -14,6 +15,7 @@ class ReceiptListRecyclerViewAdapter(private val list: List<ReceiptInfo>, privat
 
     interface onReceiptListItemClickListerner{
         fun onReceiptListItemClick(receiptId: Int)
+        fun onReceiptListItemLongClick(receiptId: Int)
     }
 
 
@@ -45,6 +47,11 @@ class ReceiptListRecyclerViewAdapter(private val list: List<ReceiptInfo>, privat
             tvReceiptPurchasedDate.text = TimeStringFormatter.format(item.purchase_date)
             itemView.setOnClickListener {
                 listener.onReceiptListItemClick(item.receipt_id)
+            }
+            itemView.setOnLongClickListener {
+                itemView.isSelected = true
+                listener.onReceiptListItemLongClick(item.receipt_id)
+                true
             }
         }
     }

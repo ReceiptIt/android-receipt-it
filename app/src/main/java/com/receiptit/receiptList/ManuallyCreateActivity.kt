@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import com.receiptit.BaseNavigationDrawerActivity
+import androidx.appcompat.app.AppCompatActivity
+
 import com.receiptit.R
 import com.receiptit.network.ServiceGenerator
 import com.receiptit.network.model.receipt.ReceiptCreateBody
@@ -20,7 +21,7 @@ import retrofit2.Call
 import retrofit2.Response
 import java.lang.Exception
 
-class ManuallyCreateActivity : BaseNavigationDrawerActivity() {
+class ManuallyCreateActivity : AppCompatActivity() {
 
     private val USER_INFO = "USER_INFO"
 

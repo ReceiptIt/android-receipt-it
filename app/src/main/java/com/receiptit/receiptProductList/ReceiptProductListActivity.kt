@@ -26,42 +26,7 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ReceiptProduc
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receipt_product_list)
         title = getString(R.string.receipt_product_list_activity)
-
-        val recyclerView = rv_receipt_product_list
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-//        //sample input
-//        val list = ArrayList<ReceiptProductItem>()
-//        list.add(
-//            ReceiptProductItem(
-//                "Apple",
-//                5,
-//                10.03,
-//                Currency.getInstance("USD"),
-//                "test1"
-//            )
-//        )
-//        list.add(
-//            ReceiptProductItem(
-//                "Peach",
-//                3,
-//                10.20,
-//                Currency.getInstance("CAD"),
-//                "test2"
-//            )
-//        )
-//        val product = ReceiptProducts(
-//            "Costo",
-//            "110ABD",
-//            Date(),
-//            100.50,
-//            Currency.getInstance("USD"),
-//            "Wanna go home",
-//            list
-//        )
-//        val adapter = ReceiptProductListRecyclerViewAdapter(product, this)
-//        recyclerView.adapter = adapter
-        init()
+        refreshReceiptProducts()
     }
 
     override fun onReceiptProductListItemClick(productId: Int) {
@@ -73,7 +38,7 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ReceiptProduc
     private fun createList(products: ReceiptProductsResponse) {
         val recyclerView = rv_receipt_product_list
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = ReceiptProductListRecyclerViewAdapter(products, this)
+        val adapter =  ReceiptProductListRecyclerViewAdapter(products, this)
         recyclerView.adapter = adapter
     }
 
@@ -81,7 +46,7 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ReceiptProduc
         Toast.makeText(this, getString(R.string.receipt_product_list_retrieve_error) + error, Toast.LENGTH_SHORT).show()
     }
 
-    private fun init() {
+    private fun refreshReceiptProducts() {
         val receiptId = intent.getIntExtra(RECEIPT_ID, 0)
         val receiptService = ServiceGenerator.createService(ReceiptApi::class.java)
         val call = receiptService.getReceiptProducts(receiptId)

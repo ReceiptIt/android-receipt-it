@@ -31,6 +31,9 @@
     <string name="receipt_list_add_receipt_manually_postcode">Post Code</string>
     <string name="receipt_list_add_receipt_manually_comment">Comment</string>
     <string name="receipt_list_add_receipt_manually_error">Create receipt manually error: </string>
+    <string name="receipt_list_delete_receipt_dialog_title">Delete Receipt</string>
+    <string name="receipt_list_delete_receipt_dialog_message">Are you sure to delete this receipt?</string>
+    <string name="receipt_list_delete_receipt_error">Delete receipt error: </string>
 
     <!--edit user-->
     <string name="edit_user_header">User Information</string>
