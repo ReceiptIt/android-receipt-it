@@ -36,7 +36,6 @@ class EditUserActivity : AppCompatActivity() {
         ed_edit_user_first_name_value.hint = userInfo.first_name
         ed_edit_user_last_name_value.hint = userInfo.last_name
         ed_edit_user_email_value.hint = userInfo.email
-        ed_edit_user_password_value.hint = userInfo.password
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -10,7 +10,7 @@ import com.receiptit.network.retrofit.ResponseErrorBody
 import com.receiptit.network.retrofit.RetrofitCallback
 import com.receiptit.network.retrofit.RetrofitCallbackListener
 import com.receiptit.network.service.ProductApi
-import kotlinx.android.synthetic.main.receipt_product_list_receipt_info_item.*
+import kotlinx.android.synthetic.main.activity_product.*
 import retrofit2.Call
 import retrofit2.Response
 

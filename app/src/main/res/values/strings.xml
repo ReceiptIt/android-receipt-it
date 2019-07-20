@@ -30,10 +30,10 @@
     <string name="receipt_list_add_receipt_manually_merchant">Merchant</string>
     <string name="receipt_list_add_receipt_manually_postcode">Post Code</string>
     <string name="receipt_list_add_receipt_manually_comment">Comment</string>
-    <string name="receipt_list_add_receipt_manually_error">Create receipt manually error: </string>
+    <string name="receipt_list_add_receipt_manually_error">Create receipt manually error:</string>
     <string name="receipt_list_delete_receipt_dialog_title">Delete Receipt</string>
     <string name="receipt_list_delete_receipt_dialog_message">Are you sure to delete this receipt?</string>
-    <string name="receipt_list_delete_receipt_error">Delete receipt error: </string>
+    <string name="receipt_list_delete_receipt_error">Delete receipt error:</string>
 
     <!--edit user-->
     <string name="edit_user_header">User Information</string>
@@ -44,6 +44,7 @@
     <string name="edit_user_password_confirm">Confirm New Password</string>
     <string name="edit_user_password_confirm_hint">Type the new password again</string>
     <string name="edit_user_error">Edit user information error:</string>
+    <string name="edit_user_password_hint">Enter new password</string>
     <string name="edit_user_password_invalid_error">Confirm Password is not the same as New Password.</string>
 
     <!--receipt product list-->
@@ -57,6 +58,18 @@
     <string name="receipt_product_list_receipt_info_comment">Receipt Comment</string>
     <string name="receipt_product_list_product_info_description">Product Description</string>
     <string name="receipt_product_list_retrieve_error">Receipt Product list retrieved error:</string>
+    <string name="receipt_product_list_receipt_edit_info_tab">Edit Receipt</string>
+    <string name="receipt_product_list_receipt_product_list_tab">Product List</string>
+    <string name="receipt_product_list_receipt_receipt_image_tab">Receipt Image</string>
+    <string name="receipt_product_list_receipt_edit_error">Receipt edit error:</string>
+    <string name="receipt_product_list_product_add_menu_title">Add a new product</string>
+    <string name="receipt_product_list_product_add_header">Add New Product</string>
+    <string name="receipt_product_list_product_add_product_name">Product Name</string>
+    <string name="receipt_product_list_product_add_product_quantity">Quantity</string>
+    <string name="receipt_product_list_product_add_product_price">Price</string>
+    <string name="receipt_product_list_product_add_product_description">Product Description</string>
+    <string name="receipt_product_list_product_add_error">Create product error: </string>
+    <string name="receipt_product_list_product_delete_error">Delete product error: </string>
 
     <!--product-->
     <string name="product_activity">Edit Product</string>
@@ -79,6 +92,10 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_save">Save</string>
+    <string name="title_activity_tabbed">TabbedActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

@@ -11,13 +11,22 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".receiptProductList.CreateProductActivity">
+        </activity>
+        <activity
+                android:name=".receiptProductList.TabbedActivity"
+                android:label="@string/title_activity_tabbed"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity android:name=".receiptList.ManuallyCreateActivity">
         </activity>
         <activity android:name=".userProfile.EditUserActivity">
         </activity>
         <activity android:name=".product.ProductActivity">
         </activity>
-        <activity android:name=".receiptProductList.ReceiptProductListActivity">
+        <activity
+                android:name=".receiptProductList.ReceiptProductListActivity"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
                 android:name=".receiptList.ReceiptListActivity"

@@ -178,6 +178,7 @@
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/edit_user_password_hint"
                     android:id="@+id/ed_edit_user_password_value"/>
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -38,6 +38,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
     private var fragment: AddReceiptFragment? = null
 
     private var ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY = 2
+    private var ACTIVITY_RESULT_RECEIPT_PRODUCT_ACTIVITY = 3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,8 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
     override fun onReceiptListItemClick(receiptId: Int) {
         val intent = Intent(this, ReceiptProductListActivity::class.java)
         intent.putExtra(RECEIPT_ID, receiptId)
-        startActivity(intent)
+        intent.putExtra(USER_INFO, userInfo)
+        startActivityForResult(intent, ACTIVITY_RESULT_RECEIPT_PRODUCT_ACTIVITY)
     }
 
     private fun createList(list: List<ReceiptInfo>) {
@@ -101,12 +103,14 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResultUpdateUserInfo(requestCode, resultCode)
-        if (requestCode == ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY) {
+        if (requestCode == ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY ||
+            requestCode == ACTIVITY_RESULT_RECEIPT_PRODUCT_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 refreshReceiptList()
             }
         }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_receipt_list, menu)
