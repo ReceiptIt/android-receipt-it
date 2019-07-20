@@ -36,14 +36,12 @@ class ReceiptListRecyclerViewAdapter(private val list: List<ReceiptInfo>, privat
         private val tvReceiptMerchant: TextView = itemView.findViewById(R.id.tv_receipt_list_item_merchant)
         private val tvReceiptPostcode: TextView = itemView.findViewById(R.id.tv_receipt_list_item_postcode)
         private val tvReceiptTotalAmount: TextView = itemView.findViewById(R.id.tv_receipt_list_item_total_amount)
-        private var tvReceiptCurrency: TextView = itemView.findViewById(R.id.tv_receipt_list_item_currency_code)
         private var tvReceiptPurchasedDate: TextView = itemView.findViewById(R.id.tv_receipt_list_item_purchased_date)
 
         fun bind(item: ReceiptInfo) {
             tvReceiptMerchant.text = item.merchant
             tvReceiptPostcode.text = item.postcode
             tvReceiptTotalAmount.text = item.total_amount.toString()
-            tvReceiptCurrency.text = StringResourceManager.getDefaultCurrencyCode()
             tvReceiptPurchasedDate.text = TimeStringFormatter.format(item.purchase_date)
             itemView.setOnClickListener {
                 listener.onReceiptListItemClick(item.receipt_id)

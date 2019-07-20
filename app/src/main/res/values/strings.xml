@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Receipt It</string>
     <!-- right now, the app only supports CAD-->
-    <string name="currency_code">CAD</string>
+    <string name="currency_code">$</string>
 
     <!--Login-->
     <string name="login_activity">Login</string>
@@ -75,6 +75,8 @@
     <string name="receipt_product_list_product_delete_error">Delete product error: </string>
     <string name="receipt_product_list_delete_product_dialog_message">Are you sure to delete this product?</string>
     <string name="receipt_product_list_delete_product_dialog_title">Delete Product</string>
+    <string name="receipt_product_list_product_info_price_prefix">Total: </string>
+    <string name="receipt_product_list_product_info_quantity_prefix">Quantity: </string>
 
     <!--product-->
     <string name="product_activity">Edit Product</string>
