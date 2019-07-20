@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.receiptit.R
-import com.receiptit.network.model.product.ProductInfo
 import com.receiptit.network.model.receipt.ReceiptInfo
 
 
@@ -23,13 +22,13 @@ private val TAB_TITLES = arrayOf(
 class ReceiptProductPageAdapter(private val context: Context, fm: FragmentManager,
                                 private val receiptInfo: ReceiptInfo) : FragmentPagerAdapter(fm) {
 
+    private val imageUrl = "http://i2.hdslb.com/bfs/archive/4876ef3522009ed40745f9fc8c154d8428df838d.jpg"
+
     override fun getItem(position: Int): Fragment {
-        return if (position == 0) {
-            EditReceiptFragment.newInstance(receiptInfo)
-        } else if (position == 1) {
-            ProductListFragment.newInstance(receiptInfo.receipt_id)
-        } else {
-            PlaceholderFragment.newInstance(position + 1)
+        return when (position) {
+            0 -> EditReceiptFragment.newInstance(receiptInfo)
+            1 -> ProductListFragment.newInstance(receiptInfo.receipt_id)
+            else -> ReceiptImageFragment.newInstance(imageUrl)
         }
     }
 
