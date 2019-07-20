@@ -66,8 +66,8 @@
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/ed_receipt_list_add_receipt_manually_purchase_date_value"
-                    android:text="2019-07-14T17:58:21+00:00"/>
+                    android:focusable="false"
+                    android:id="@+id/ed_receipt_list_add_receipt_manually_purchase_date_value"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 

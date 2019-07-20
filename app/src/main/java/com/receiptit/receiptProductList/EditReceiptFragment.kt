@@ -1,5 +1,6 @@
 package com.receiptit.receiptProductList
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -18,8 +19,11 @@ import com.receiptit.network.service.ReceiptApi
 import com.receiptit.util.TimeStringFormatter
 import retrofit2.Call
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 private const val RECEIPT_INFO = "RECEIPT_INFO"
+private lateinit var myCalendar: Calendar
 
 class EditReceiptFragment : Fragment() {
     private var receiptInfo: ReceiptInfo? = null
@@ -59,8 +63,42 @@ class EditReceiptFragment : Fragment() {
         edReceiptInfoMerchant?.hint = receiptInfo?.merchant
         edReceiptInfoPostcode?.hint = receiptInfo?.postcode
         edReceiptInfoTotalAmount?.hint = receiptInfo?.total_amount.toString()
-        edReceiptInfoPurchasedDate?.hint = receiptInfo?.purchase_date?.let { TimeStringFormatter.format(it) }
+
+        val processedTimeString = receiptInfo?.purchase_date?.let { TimeStringFormatter.format(it) }
+
+        edReceiptInfoPurchasedDate?.hint = processedTimeString
         edReceiptInfoComment?.hint = receiptInfo?.comment
+
+        myCalendar = Calendar.getInstance()
+        val myFormat = "yyyy-MM-dd"
+        val sdf = SimpleDateFormat(myFormat)
+        myCalendar.time = sdf.parse(processedTimeString)
+
+        val date = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            myCalendar.set(Calendar.YEAR, year)
+            myCalendar.set(Calendar.MONTH, monthOfYear)
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateLabel()
+        }
+
+        edReceiptInfoPurchasedDate?.setOnClickListener {
+            context?.let { it1 ->
+                DatePickerDialog(
+                    it1, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
+        }
+
+    }
+
+    private fun updateLabel() {
+        val edReceiptInfoPurchasedDate: EditText? =
+            view?.findViewById(R.id.ed_product_price_value)
+        val myFormat = "yyyy-MM-dd"
+        val sdf = SimpleDateFormat(myFormat)
+        edReceiptInfoPurchasedDate?.setText(sdf.format(myCalendar.time))
     }
 
     private fun unFocusView(editText: EditText?) {
@@ -97,7 +135,7 @@ class EditReceiptFragment : Fragment() {
         unFocusView(edReceiptInfoMerchant)
         unFocusView(edReceiptInfoPostcode)
         unFocusView(edReceiptInfoTotalAmount)
-        unFocusView(edReceiptInfoPurchasedDate)
+        edReceiptInfoPurchasedDate?.setText("")
         unFocusView(edReceiptInfoComment)
     }
 
@@ -125,7 +163,7 @@ class EditReceiptFragment : Fragment() {
             totalAmount.toDouble()
             true
         } catch (e: Exception){
-            false
+            totalAmount == ""
         }
     }
 
@@ -145,7 +183,7 @@ class EditReceiptFragment : Fragment() {
         val merchant = edReceiptInfoMerchant?.text.toString()
         val postcode = edReceiptInfoPostcode?.text.toString()
         val totalAmount = edReceiptInfoTotalAmount?.text.toString()
-        val purchaseDate = edReceiptInfoPurchasedDate?.text.toString()
+        val prePurchaseDate = edReceiptInfoPurchasedDate?.text.toString()
         val comment = edReceiptInfoComment?.text.toString()
 
         if (merchant != "")
@@ -157,8 +195,9 @@ class EditReceiptFragment : Fragment() {
         if (totalAmount != "")
             body.total_amount = totalAmount.toDouble()
 
-        if (purchaseDate != "")
-            body.purchase_date = purchaseDate
+        if (prePurchaseDate != "") {
+            body.purchase_date = TimeStringFormatter.concatenate(prePurchaseDate)
+        }
 
         if (comment != "")
             body.comment = comment

@@ -7,4 +7,8 @@ object TimeStringFormatter {
     fun format(date: String): String {
          return date.split(SPLIT_POINT)[0]
     }
+
+    fun concatenate(date: String): String {
+        return date + "T00:00:00.000Z"
+    }
 }

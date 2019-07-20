@@ -110,6 +110,7 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ProductListFr
     }
 
     override fun onBackPressed() {
+        setResult(Activity.RESULT_OK)
         finish()
     }
 }

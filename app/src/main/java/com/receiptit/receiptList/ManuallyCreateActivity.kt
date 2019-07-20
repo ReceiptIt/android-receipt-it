@@ -20,19 +20,48 @@ import kotlinx.android.synthetic.main.activity_manually_create.*
 import retrofit2.Call
 import retrofit2.Response
 import java.lang.Exception
+import android.app.DatePickerDialog
+import com.receiptit.util.TimeStringFormatter
+import java.util.*
+import java.text.SimpleDateFormat
+
 
 class ManuallyCreateActivity : AppCompatActivity() {
 
     private val USER_INFO = "USER_INFO"
+    private lateinit var myCalendar: Calendar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manually_create)
-        ed_receipt_list_add_receipt_manually_purchase_date_value.text
+
+        myCalendar = Calendar.getInstance()
+
+        val date = DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            myCalendar.set(Calendar.YEAR, year)
+            myCalendar.set(Calendar.MONTH, monthOfYear)
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateLabel()
+        }
+
+        ed_receipt_list_add_receipt_manually_purchase_date_value.setOnClickListener {
+            DatePickerDialog(
+                this, date, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                myCalendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+    }
+
+    private fun updateLabel() {
+        val myFormat = "yyyy-MM-dd"
+        val sdf = SimpleDateFormat(myFormat)
+        ed_receipt_list_add_receipt_manually_purchase_date_value.setText(sdf.format(myCalendar.time))
     }
 
     private fun createReceipt() {
-        val purchaseDate = ed_receipt_list_add_receipt_manually_purchase_date_value.text.toString()
+        val prePurchaseDate = ed_receipt_list_add_receipt_manually_purchase_date_value.text.toString()
+        val purchaseDate = TimeStringFormatter.concatenate(prePurchaseDate)
         val totalAmount = ed_receipt_list_add_receipt_manually_total_amount_value.text.toString()
         val merchant = ed_receipt_list_add_receipt_manually_merchant_value.text.toString()
         val postCode = ed_receipt_list_add_receipt_manually_merchant_value.text.toString()
