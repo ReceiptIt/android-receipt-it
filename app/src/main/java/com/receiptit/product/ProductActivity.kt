@@ -30,7 +30,6 @@ class ProductActivity : BaseNavigationDrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product)
-        title = getString(R.string.product_activity)
         init()
     }
 

@@ -46,7 +46,6 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         super.onCreateDrawer()
-        title = getString(R.string.receipt_list_activity)
         refreshReceiptList()
     }
 

@@ -34,7 +34,6 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ProductListFr
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         super.onCreateDrawer()
-        title = getString(R.string.receipt_product_list_activity)
 
         init()
     }

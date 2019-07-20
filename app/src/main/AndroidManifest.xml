@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.receiptit">
-    <!-- To access Google+ APIs: -->
+          xmlns:tools="http://schemas.android.com/tools" package="com.receiptit">
+
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -10,25 +10,31 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
-        <activity android:name=".receiptProductList.CreateProductActivity">
+            android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".receiptProductList.CreateProductActivity"
+                  android:label="@string/receipt_product_list_product_add_activity_title">
         </activity>
-        <activity android:name=".receiptList.ManuallyCreateActivity">
+        <activity android:name=".receiptList.ManuallyCreateActivity"
+                  android:label="@string/receipt_list_add_receipt_manually_activity_title">
         </activity>
-        <activity android:name=".userProfile.EditUserActivity">
+        <activity android:name=".userProfile.EditUserActivity"
+                  android:label="@string/edit_user_activity_title">
         </activity>
-        <activity android:name=".product.ProductActivity">
+        <activity android:name=".product.ProductActivity"
+                  android:label="@string/product_activity">
         </activity>
         <activity
                 android:name=".receiptProductList.ReceiptProductListActivity"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.NoActionBar"
+                android:label="@string/receipt_product_list_activity">
         </activity>
         <activity
                 android:name=".receiptList.ReceiptListActivity"
                 android:label="@string/title_activity_receipt_list"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".login.LoginActivity">
+        <activity android:name=".login.LoginActivity"
+                  android:label="@string/login_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

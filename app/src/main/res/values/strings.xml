@@ -13,7 +13,7 @@
     <string name="login_error_authentication_fail">Login fail</string>
     <string name="login_success">Login success.</string>
     <string name="login_logging_in">Logging in......</string>
-    <string name="title_activity_receipt_list">ReceiptListActivity</string>
+    <string name="title_activity_receipt_list">Receipt List</string>
 
     <!--receipt list-->
     <string name="receipt_list_activity">Receipt List</string>
@@ -23,8 +23,9 @@
     <string name="receipt_list_add_receipt">Add a new receipt</string>
     <string name="receipt_list_add_receipt_header">Add Receipt</string>
     <string name="receipt_list_add_receipt_manually_create">Manually Create Receipt</string>
+    <string name="receipt_list_add_receipt_manually_activity_title">Manually Create Receipt</string>
     <string name="receipt_list_add_receipt_camera_scan">Scan Receipt</string>
-    <string name="receipt_list_add_receipt_manually_header">Manually Create Receipt</string>
+    <string name="receipt_list_add_receipt_manually_header">Receipt Information</string>
     <string name="receipt_list_add_receipt_manually_purchase_date">Purchase Date</string>
     <string name="receipt_list_add_receipt_manually_total_amount">Total Amount</string>
     <string name="receipt_list_add_receipt_manually_merchant">Merchant</string>
@@ -46,10 +47,11 @@
     <string name="edit_user_error">Edit user information error:</string>
     <string name="edit_user_password_hint">Enter new password</string>
     <string name="edit_user_password_invalid_error">Confirm Password is not the same as New Password.</string>
+    <string name="edit_user_activity_title">Edit User</string>
 
     <!--receipt product list-->
-    <string name="receipt_product_list_activity">Product List</string>
-    <string name="receipt_product_list_receipt_info_header">Receipt Info</string>
+    <string name="receipt_product_list_activity">Receipt Product List</string>
+    <string name="receipt_product_list_receipt_info_header">Receipt Information</string>
     <string name="receipt_product_list_receipt_info_merchant">Merchant</string>
     <string name="receipt_product_list_receipt_info_post_code">Post Code</string>
     <string name="receipt_product_list_receipt_info_purchased_date">Purchased Date</string>
@@ -63,7 +65,8 @@
     <string name="receipt_product_list_receipt_receipt_image_tab">Receipt Image</string>
     <string name="receipt_product_list_receipt_edit_error">Receipt edit error:</string>
     <string name="receipt_product_list_product_add_menu_title">Add a new product</string>
-    <string name="receipt_product_list_product_add_header">Add New Product</string>
+    <string name="receipt_product_list_product_add_activity_title">Add New Product</string>
+    <string name="receipt_product_list_product_add_header">Product Information</string>
     <string name="receipt_product_list_product_add_product_name">Product Name</string>
     <string name="receipt_product_list_product_add_product_quantity">Quantity</string>
     <string name="receipt_product_list_product_add_product_price">Price</string>
@@ -75,7 +78,7 @@
 
     <!--product-->
     <string name="product_activity">Edit Product</string>
-    <string name="product_header">Product Info</string>
+    <string name="product_header">Product Information</string>
     <string name="product_name">Product Name</string>
     <string name="product_quantity">Quantity</string>
     <string name="product_price">Price</string>
