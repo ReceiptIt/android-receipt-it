@@ -40,8 +40,10 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ProductListFr
     }
 
     override fun onProductListFragmentItemClick(productId: Int) {
+        val receiptId = intent.getIntExtra(RECEIPT_ID, 0)
         val intent = Intent(this, ProductActivity::class.java)
         intent.putExtra(PRODUCT_ID, productId)
+        intent.putExtra(RECEIPT_ID, receiptId)
         startActivityForResult(intent, ACTIVITY_RESULT_PRODCUT_ACTIVITY)
     }
 
@@ -99,7 +101,8 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ProductListFr
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResultUpdateUserInfo(requestCode, resultCode)
-        if (requestCode == ACTIVITY_RESULT_CREATE_PRODCUT_ACTIVITY) {
+        if (requestCode == ACTIVITY_RESULT_CREATE_PRODCUT_ACTIVITY
+            || requestCode == ACTIVITY_RESULT_PRODCUT_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
                 val fragment = supportFragmentManager.fragments[1] as ProductListFragment
                 fragment.refreshProductList()
@@ -108,7 +111,6 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ProductListFr
     }
 
     override fun onBackPressed() {
-        setResult(Activity.RESULT_OK)
         finish()
     }
 }

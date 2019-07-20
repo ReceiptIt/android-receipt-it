@@ -103,6 +103,7 @@
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:id="@+id/ed_product_quantity_value"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -140,6 +141,7 @@
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:id="@+id/ed_product_price_value"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -157,45 +159,9 @@
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:id="@+id/tv_product_currency_label"
-                  app:layout_constraintLeft_toLeftOf="@id/tv_product_price_label"
-                  app:layout_constraintTop_toTopOf="@id/tl_product_currency_layout"
-                  app:layout_constraintBottom_toBottomOf="@id/tl_product_currency_layout"
-                  android:textSize="16sp"
-                  android:text="@string/product_currency"
-                  tools:text="test"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.4"
-                android:layout_height="wrap_content"
-                android:id="@+id/tl_product_currency_layout"
-                app:layout_constraintLeft_toLeftOf="@id/tl_product_price_layout"
-                app:layout_constraintTop_toBottomOf="@id/v_product_price_divider"
-                android:layout_marginTop="@dimen/margin_small"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-            <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/ed_product_currency_value"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <View android:layout_width="0dp"
-              app:layout_constraintWidth_percent="0.9"
-              android:layout_height="1dp"
-              android:id="@+id/v_product_currency_divider"
-              android:background="@android:color/darker_gray"
-              app:layout_constraintLeft_toLeftOf="@id/tv_product_header"
-              app:layout_constraintRight_toRightOf="parent"
-              android:layout_marginEnd="@dimen/margin_medium"
-              app:layout_constraintTop_toBottomOf="@id/tl_product_currency_layout"
-              android:layout_marginTop="@dimen/margin_small"/>
-
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
                   android:id="@+id/tv_product_description_label"
-                  app:layout_constraintLeft_toLeftOf="@id/tv_product_currency_label"
-                  app:layout_constraintTop_toBottomOf="@id/v_product_currency_divider"
+                  app:layout_constraintLeft_toLeftOf="@id/tv_product_price_label"
+                  app:layout_constraintTop_toBottomOf="@id/v_product_price_divider"
                   android:layout_marginTop="@dimen/margin_small"
                   android:textSize="16sp"
                   android:text="@string/product_description"
@@ -207,7 +173,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tl_product_description_layout"
                 app:layout_constraintLeft_toLeftOf="@id/tv_product_description_label"
-                app:layout_constraintRight_toRightOf="@id/tl_product_currency_layout"
+                app:layout_constraintRight_toRightOf="@id/tl_product_price_layout"
                 app:layout_constraintTop_toBottomOf="@id/tv_product_description_label"
                 android:layout_marginTop="@dimen/margin_small"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">

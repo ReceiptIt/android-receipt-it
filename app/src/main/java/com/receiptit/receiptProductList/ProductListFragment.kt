@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.receiptit.R
 import com.receiptit.network.ServiceGenerator
 import com.receiptit.network.model.SimpleResponse
+import com.receiptit.network.model.product.ProductFromReceiptResponse
 import com.receiptit.network.model.product.ProductInfo
 import com.receiptit.network.model.receipt.ReceiptProductsResponse
 import com.receiptit.network.retrofit.ResponseErrorBody
@@ -55,26 +56,26 @@ class ProductListFragment : Fragment(),
     }
 
      fun refreshProductList() {
-        val receiptService = ServiceGenerator.createService(ReceiptApi::class.java)
-        val call = receiptId?.let { receiptService.getReceiptProducts(it) }
-        call?.enqueue(RetrofitCallback(object : RetrofitCallbackListener<ReceiptProductsResponse> {
+        val productService = ServiceGenerator.createService(ProductApi::class.java)
+        val call = receiptId?.let { productService.getProductsFromReceipt(it) }
+        call?.enqueue(RetrofitCallback(object : RetrofitCallbackListener<ProductFromReceiptResponse> {
             override fun onResponseSuccess(
-                call: Call<ReceiptProductsResponse>?,
-                response: Response<ReceiptProductsResponse>?
+                call: Call<ProductFromReceiptResponse>?,
+                response: Response<ProductFromReceiptResponse>?
             ) {
                 val list = response?.body()?.products
                 list?.let { createList(it) }
             }
 
             override fun onResponseError(
-                call: Call<ReceiptProductsResponse>?,
-                response: Response<ReceiptProductsResponse>?
+                call: Call<ProductFromReceiptResponse>?,
+                response: Response<ProductFromReceiptResponse>?
             ) {
                 val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
                 message?.getErrorMessage()?.let { showCreateProductError(it) }
             }
 
-            override fun onFailure(call: Call<ReceiptProductsResponse>?, t: Throwable?) {
+            override fun onFailure(call: Call<ProductFromReceiptResponse>?, t: Throwable?) {
                 t?.message?.let { showCreateProductError(it) }
             }
 
@@ -103,8 +104,8 @@ class ProductListFragment : Fragment(),
     override fun onReceiptProductListItemLongClick(productId: Int) {
         context?.let {
             AlertDialog.Builder(it)
-                .setTitle(getString(R.string.receipt_list_delete_receipt_dialog_title))
-                .setMessage(getString(R.string.receipt_list_delete_receipt_dialog_message))
+                .setTitle(getString(R.string.receipt_product_list_delete_product_dialog_title))
+                .setMessage(getString(R.string.receipt_product_list_delete_product_dialog_message))
                 .setPositiveButton(android.R.string.yes) { _, _ ->
                     deleteProduct(productId)
                 }

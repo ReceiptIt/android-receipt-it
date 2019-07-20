@@ -70,6 +70,8 @@
     <string name="receipt_product_list_product_add_product_description">Product Description</string>
     <string name="receipt_product_list_product_add_error">Create product error: </string>
     <string name="receipt_product_list_product_delete_error">Delete product error: </string>
+    <string name="receipt_product_list_delete_product_dialog_message">Are you sure to delete this product?</string>
+    <string name="receipt_product_list_delete_product_dialog_title">Delete Product</string>
 
     <!--product-->
     <string name="product_activity">Edit Product</string>
@@ -80,6 +82,7 @@
     <string name="product_currency">Currency Code</string>
     <string name="product_description">Product Description</string>
     <string name="product_retrieve_error">Product retrieved error:</string>
+    <string name="product_update_error">Product update error: </string>
 
     <!--retrofit-->
     <string name="network_error_unauthorized">Token unauthorized. Please login again!</string>
