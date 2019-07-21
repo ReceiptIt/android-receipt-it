@@ -4,17 +4,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.receiptit.R
 import com.receiptit.network.model.receipt.ReceiptInfo
-import com.receiptit.util.StringResourceManager
 import com.receiptit.util.TimeStringFormatter
 
-class ReceiptListRecyclerViewAdapter(private val list: List<ReceiptInfo>, private var mOnReceiptListItemClickListener: onReceiptListItemClickListerner): RecyclerView.Adapter<ReceiptListRecyclerViewAdapter.ReceiptListItemViewHolder>()  {
+class ReceiptListRecyclerViewAdapter(private val list: List<ReceiptInfo>, private var mOnReceiptListItemClickListener: OnReceiptListItemClickListener): RecyclerView.Adapter<ReceiptListRecyclerViewAdapter.ReceiptListItemViewHolder>()  {
 
-    interface onReceiptListItemClickListerner{
-        fun onReceiptListItemClick(receiptId: Int)
+    interface OnReceiptListItemClickListener{
+        fun onReceiptListItemClick(receiptId: Int, imageUrl: String? = null)
         fun onReceiptListItemLongClick(receiptId: Int)
     }
 
@@ -32,7 +30,7 @@ class ReceiptListRecyclerViewAdapter(private val list: List<ReceiptInfo>, privat
         holder.bind(text)
     }
 
-    class ReceiptListItemViewHolder(itemView: View, var listener: onReceiptListItemClickListerner) : RecyclerView.ViewHolder(itemView) {
+    class ReceiptListItemViewHolder(itemView: View, var listener: OnReceiptListItemClickListener) : RecyclerView.ViewHolder(itemView) {
         private val tvReceiptMerchant: TextView = itemView.findViewById(R.id.tv_receipt_list_item_merchant)
         private val tvReceiptPostcode: TextView = itemView.findViewById(R.id.tv_receipt_list_item_postcode)
         private val tvReceiptTotalAmount: TextView = itemView.findViewById(R.id.tv_receipt_list_item_total_amount)
@@ -44,7 +42,7 @@ class ReceiptListRecyclerViewAdapter(private val list: List<ReceiptInfo>, privat
             tvReceiptTotalAmount.text = item.total_amount.toString()
             tvReceiptPurchasedDate.text = TimeStringFormatter.format(item.purchase_date)
             itemView.setOnClickListener {
-                listener.onReceiptListItemClick(item.receipt_id)
+                listener.onReceiptListItemClick(item.receipt_id, item.image_url)
             }
             itemView.setOnLongClickListener {
                 itemView.isSelected = true

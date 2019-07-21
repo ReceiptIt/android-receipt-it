@@ -25,13 +25,32 @@ import retrofit2.Call
 import retrofit2.Response
 import androidx.appcompat.app.AlertDialog
 import com.receiptit.network.model.SimpleResponse
+import kotlinx.android.synthetic.main.activity_receipt_list.*
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import androidx.annotation.RequiresApi
+import androidx.core.content.FileProvider
+import com.receiptit.network.model.image.ReceiptImageCreaetResponse
+import com.receiptit.network.model.receipt.ReceiptCreateBody
+import com.receiptit.network.model.receipt.ReceiptCreateResponse
+import com.receiptit.network.service.ImageApi
+import com.receiptit.util.TimeStringFormatter
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
-
-class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClickListerner,
+class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClickListener,
     BaseNavigationDrawerActivity(), AddReceiptFragment.OnAddReceiptFragmentCloseListener{
 
     private val USER_INFO = "USER_INFO"
     private val RECEIPT_ID = "RECEIPT_ID"
+    private val RECEIPT_URL = "RECEIPT_URL"
     private var userInfo : UserInfo? = null
     private var isFragmentShow = false
 
@@ -39,6 +58,8 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
 
     private var ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY = 2
     private var ACTIVITY_RESULT_RECEIPT_PRODUCT_ACTIVITY = 3
+    private var ACTIVITY_RESULT_CAMERA = 4
+    private lateinit var currentPhotoPath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +67,45 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         super.onCreateDrawer()
+        init()
         refreshReceiptList()
     }
 
-    override fun onReceiptListItemClick(receiptId: Int) {
+    private fun init() {
+        fab.setOnClickListener {
+            takePhoto()
+        }
+    }
+
+    private fun takePhoto() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        this,
+                        "com.receiptit",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, ACTIVITY_RESULT_CAMERA)
+                }
+            }
+        }
+    }
+
+    override fun onReceiptListItemClick(receiptId: Int, imageUrl: String?) {
         val intent = Intent(this, ReceiptProductListActivity::class.java)
         intent.putExtra(RECEIPT_ID, receiptId)
+        intent.putExtra(RECEIPT_URL, imageUrl)
         intent.putExtra(USER_INFO, userInfo)
         startActivityForResult(intent, ACTIVITY_RESULT_RECEIPT_PRODUCT_ACTIVITY)
     }
@@ -69,6 +123,15 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
 
     private fun showDeleteReceiptListError(error: String){
         Toast.makeText(this, getString(R.string.receipt_list_delete_receipt_error) + error, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showCreateReceiptError(error: String) {
+        Toast.makeText(this, getString(R.string.receipt_list_add_receipt_manually_error) + error, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showSendReceiptImageError(error: String) {
+        Toast.makeText(this, getString(R.string.receipt_list_scan_receipt_error) + error, Toast.LENGTH_SHORT).show()
+
     }
 
     private fun refreshReceiptList() {
@@ -100,6 +163,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
         }))
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResultUpdateUserInfo(requestCode, resultCode)
         if (requestCode == ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY ||
@@ -107,6 +171,83 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
             if (resultCode == Activity.RESULT_OK) {
                 refreshReceiptList()
             }
+        } else if (requestCode == ACTIVITY_RESULT_CAMERA ){
+            scanFakeReceipt()
+        }
+    }
+
+    //need to manually create a receipt at this time
+    private fun scanFakeReceipt() {
+        // create a fake receipt
+        val receiptBody = createBody()
+        val receiptService = ServiceGenerator.createService(ReceiptApi::class.java)
+        val call = receiptBody?.let { receiptService.createReceipt(it) }
+        call?.enqueue(RetrofitCallback(object: RetrofitCallbackListener<ReceiptCreateResponse>{
+            override fun onResponseSuccess(
+                call: Call<ReceiptCreateResponse>?,
+                response: Response<ReceiptCreateResponse>?
+            ) {
+                // upload image
+                val receiptId = response?.body()?.receiptInfo?.receipt_id
+                receiptId?.let { sendReceiptImage(it) }
+            }
+
+            override fun onResponseError(
+                call: Call<ReceiptCreateResponse>?,
+                response: Response<ReceiptCreateResponse>?
+            ) {
+                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
+                message?.getErrorMessage()?.let { showCreateReceiptError(it) }
+            }
+
+            override fun onFailure(call: Call<ReceiptCreateResponse>?, t: Throwable?) {
+                t?.message?.let { showDeleteReceiptListError(it) }
+            }
+
+        }))
+        
+    }
+
+    private fun sendReceiptImage(receiptId: Int) {
+        val imageService = ServiceGenerator.createService(ImageApi::class.java)
+        val imageFile = File(currentPhotoPath)
+        val fileReqBody = RequestBody.create(MediaType.parse("image/*"), imageFile)
+        val part = MultipartBody.Part.createFormData("image", imageFile.name, fileReqBody)
+
+        val call = imageService.createReceiptImage(part, receiptId)
+        call.enqueue(RetrofitCallback(object: RetrofitCallbackListener<ReceiptImageCreaetResponse>{
+            override fun onResponseSuccess(
+                call: Call<ReceiptImageCreaetResponse>?,
+                response: Response<ReceiptImageCreaetResponse>?
+            ) {
+                refreshReceiptList()
+            }
+
+            override fun onResponseError(
+                call: Call<ReceiptImageCreaetResponse>?,
+                response: Response<ReceiptImageCreaetResponse>?
+            ) {
+                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
+                message?.getErrorMessage()?.let { showSendReceiptImageError(it) }
+            }
+
+            override fun onFailure(call: Call<ReceiptImageCreaetResponse>?, t: Throwable?) {
+                t?.message?.let { showSendReceiptImageError(it) }
+            }
+        }))
+    }
+    
+    private fun createBody(): ReceiptCreateBody? {
+        userInfo = intent.getSerializableExtra(USER_INFO) as UserInfo
+        val userId = userInfo?.user_id
+        val calendar = Calendar.getInstance()
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val prePurchaseDate = sdf.format(calendar.time)
+        val purchaseDate = TimeStringFormatter.concatenate(prePurchaseDate)
+        return userId?.let {
+            ReceiptCreateBody(
+                it, purchaseDate, 123.00, "Mie Mie",
+                "1J2 3U4")
         }
     }
 
@@ -148,6 +289,10 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
         startActivityForResult(intent, ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY)
     }
 
+    override fun onAddReceiptScan() {
+        takePhoto()
+    }
+
     override fun onReceiptListItemLongClick(receiptId: Int) {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.receipt_list_delete_receipt_dialog_title))
@@ -181,6 +326,21 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.onReceiptListItemClic
             }
 
         }))
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
     }
 
 }

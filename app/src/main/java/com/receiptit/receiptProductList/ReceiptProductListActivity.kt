@@ -2,23 +2,37 @@ package com.receiptit.receiptProductList
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.FileProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.receiptit.BaseNavigationDrawerActivity
 import com.receiptit.R
 import com.receiptit.network.ServiceGenerator
+import com.receiptit.network.model.image.ReceiptImageCreaetResponse
 import com.receiptit.network.model.receipt.ReceiptInfo
 import com.receiptit.network.model.receipt.ReceiptProductsResponse
 import com.receiptit.network.retrofit.ResponseErrorBody
 import com.receiptit.network.retrofit.RetrofitCallback
 import com.receiptit.network.retrofit.RetrofitCallbackListener
+import com.receiptit.network.service.ImageApi
 import com.receiptit.network.service.ReceiptApi
 import com.receiptit.product.ProductActivity
+import kotlinx.android.synthetic.main.activity_receipt_product_list.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ProductListFragment.OnProductListFragmentItemClickListener{
 
@@ -26,7 +40,9 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ProductListFr
     private val PRODUCT_ID = "PRODUCT_ID"
     private val ACTIVITY_RESULT_PRODCUT_ACTIVITY = 3
     private val ACTIVITY_RESULT_CREATE_PRODCUT_ACTIVITY = 4
+    private var ACTIVITY_RESULT_CAMERA = 5
     private lateinit var pagerAdapter: ReceiptProductPageAdapter
+    private lateinit var currentPhotoPath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +50,85 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ProductListFr
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         super.onCreateDrawer()
-
+        fab.setOnClickListener {
+            takePhoto()
+        }
         init()
+    }
+
+    private fun takePhoto() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        this,
+                        "com.receiptit",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, ACTIVITY_RESULT_CAMERA)
+                }
+            }
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }
+
+    private fun sendReceiptImage(receiptId: Int) {
+        val imageService = ServiceGenerator.createService(ImageApi::class.java)
+        val imageFile = File(currentPhotoPath)
+        val fileReqBody = RequestBody.create(MediaType.parse("image/*"), imageFile)
+        val part = MultipartBody.Part.createFormData("image", imageFile.name, fileReqBody)
+
+        val call = imageService.createReceiptImage(part, receiptId)
+        call.enqueue(RetrofitCallback(object: RetrofitCallbackListener<ReceiptImageCreaetResponse>{
+            override fun onResponseSuccess(
+                call: Call<ReceiptImageCreaetResponse>?,
+                response: Response<ReceiptImageCreaetResponse>?
+            ) {
+                val last = supportFragmentManager.fragments.size - 1
+                val fragment = supportFragmentManager.fragments[last] as ReceiptImageFragment
+                fragment.refreshReceiptImage()
+            }
+
+            override fun onResponseError(
+                call: Call<ReceiptImageCreaetResponse>?,
+                response: Response<ReceiptImageCreaetResponse>?
+            ) {
+                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
+                message?.getErrorMessage()?.let { showSendReceiptImageError(it) }
+            }
+
+            override fun onFailure(call: Call<ReceiptImageCreaetResponse>?, t: Throwable?) {
+                t?.message?.let { showSendReceiptImageError(it) }
+            }
+        }))
+    }
+
+    private fun showSendReceiptImageError(error: String) {
+        Toast.makeText(this, getString(R.string.receipt_list_scan_receipt_error) + error, Toast.LENGTH_SHORT).show()
     }
 
     override fun onProductListFragmentItemClick(productId: Int) {
@@ -70,7 +163,7 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ProductListFr
                     ReceiptInfo(
                         it.receipt_id, it.user_id, it.purchase_date,
                         it.total_amount, it.merchant, it.merchant, it.comment,
-                        it.updatedAt, it.createdAt)
+                        it.image_name, it.image_url, it.updatedAt, it.createdAt)
                 }
                 receiptInfo?.let { createFragments(it) }
             }
@@ -106,6 +199,9 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ProductListFr
                 val fragment = supportFragmentManager.fragments[1] as ProductListFragment
                 fragment.refreshProductList()
             }
+        } else if (requestCode == ACTIVITY_RESULT_CAMERA ){
+            val receiptId = intent.getIntExtra(RECEIPT_ID, 0)
+            sendReceiptImage(receiptId)
         }
     }
 

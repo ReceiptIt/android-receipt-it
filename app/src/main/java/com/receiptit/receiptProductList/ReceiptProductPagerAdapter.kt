@@ -22,13 +22,11 @@ private val TAB_TITLES = arrayOf(
 class ReceiptProductPageAdapter(private val context: Context, fm: FragmentManager,
                                 private val receiptInfo: ReceiptInfo) : FragmentPagerAdapter(fm) {
 
-    private val imageUrl = "http://i2.hdslb.com/bfs/archive/4876ef3522009ed40745f9fc8c154d8428df838d.jpg"
-
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> EditReceiptFragment.newInstance(receiptInfo)
             1 -> ProductListFragment.newInstance(receiptInfo.receipt_id)
-            else -> ReceiptImageFragment.newInstance(imageUrl)
+            else -> ReceiptImageFragment.newInstance(receiptInfo.image_url, receiptInfo.receipt_id)
         }
     }
 
