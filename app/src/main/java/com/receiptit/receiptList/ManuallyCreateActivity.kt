@@ -64,7 +64,7 @@ class ManuallyCreateActivity : AppCompatActivity() {
         val purchaseDate = TimeStringFormatter.concatenate(prePurchaseDate)
         val totalAmount = ed_receipt_list_add_receipt_manually_total_amount_value.text.toString()
         val merchant = ed_receipt_list_add_receipt_manually_merchant_value.text.toString()
-        val postCode = ed_receipt_list_add_receipt_manually_merchant_value.text.toString()
+        val postCode = ed_receipt_list_add_receipt_manually_postcode_value.text.toString()
         val comment = ed_receipt_list_add_receipt_manually_comment_value.text.toString()
 
         val userInfo = intent.getSerializableExtra(USER_INFO) as UserInfo

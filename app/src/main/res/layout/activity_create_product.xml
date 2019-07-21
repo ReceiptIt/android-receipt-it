@@ -103,7 +103,7 @@
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
                     android:id="@+id/ed_receipt_product_list_add_product_quantity_value"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -141,7 +141,7 @@
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType = "number"
+                    android:inputType = "numberDecimal"
                     android:id="@+id/ed_receipt_product_list_add_product_price_value"/>
         </com.google.android.material.textfield.TextInputLayout>
 
