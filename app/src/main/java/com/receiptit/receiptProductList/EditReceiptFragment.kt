@@ -104,7 +104,6 @@ class EditReceiptFragment : Fragment() {
     private fun unFocusView(editText: EditText?) {
         editText?.isFocused?.let {
             if (it)
-                editText.setText("")
                 editText.clearFocus()
         }
     }
@@ -133,10 +132,18 @@ class EditReceiptFragment : Fragment() {
         setEditTextHint(edReceiptInfoComment)
 
         unFocusView(edReceiptInfoMerchant)
+        edReceiptInfoMerchant?.setText("")
+
         unFocusView(edReceiptInfoPostcode)
+        edReceiptInfoPostcode?.setText("")
+
         unFocusView(edReceiptInfoTotalAmount)
+        edReceiptInfoTotalAmount?.setText("")
+
         edReceiptInfoPurchasedDate?.setText("")
+
         unFocusView(edReceiptInfoComment)
+        edReceiptInfoComment?.setText("")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

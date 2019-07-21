@@ -21,7 +21,7 @@ import retrofit2.Response
 
 class LoginViewModel : ViewModel() {
 
-    private val mutableUsername = MutableLiveData<String>().apply { value = "test@android.com" }
+    private val mutableUsername = MutableLiveData<String>().apply { value = "noway@android.com" }
     val username = MediatorLiveData<String>().apply {
         addSource(mutableUsername) { value ->
             setValue(value)

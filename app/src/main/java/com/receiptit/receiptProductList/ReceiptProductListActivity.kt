@@ -162,7 +162,7 @@ class ReceiptProductListActivity : BaseNavigationDrawerActivity(), ProductListFr
                 val receiptInfo = result?.let {
                     ReceiptInfo(
                         it.receipt_id, it.user_id, it.purchase_date,
-                        it.total_amount, it.merchant, it.merchant, it.comment,
+                        it.total_amount, it.merchant, it.postcode, it.comment,
                         it.image_name, it.image_url, it.updatedAt, it.createdAt)
                 }
                 receiptInfo?.let { createFragments(it) }

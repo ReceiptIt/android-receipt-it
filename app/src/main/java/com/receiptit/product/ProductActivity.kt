@@ -73,8 +73,8 @@ class ProductActivity : BaseNavigationDrawerActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (item.itemId == R.id.menu_edit_product_save) {
-            if (!validInput())
-                showError(getString(R.string.edit_user_password_invalid_error))
+            if (!(validQuantity() || validQuantity()))
+                showError("Invalid input")
             else
                 saveProduct()
             true
@@ -82,15 +82,30 @@ class ProductActivity : BaseNavigationDrawerActivity() {
             super.onOptionsItemSelected(item)
     }
 
-    private fun validInput(): Boolean {
-        val name = ed_product_name_value.text.toString()
+    private fun validQuantity(): Boolean {
         val quantity = ed_product_quantity_value.text.toString()
+        return try {
+            if (quantity == "")
+                true
+            else{
+                quantity.toInt()
+                true
+            }
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun validPrice(): Boolean {
         val price = ed_product_price_value.text.toString()
 
         return try {
-            quantity.toInt()
-            price.toDouble()
-            name != ""
+            if (price == "")
+                true
+            else{
+                price.toDouble()
+                true
+            }
         } catch (e: Exception) {
             false
         }
