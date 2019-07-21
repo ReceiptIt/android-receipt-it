@@ -35,6 +35,7 @@
     <string name="receipt_list_delete_receipt_dialog_title">Delete Receipt</string>
     <string name="receipt_list_delete_receipt_dialog_message">Are you sure to delete this receipt?</string>
     <string name="receipt_list_delete_receipt_error">Delete receipt error:</string>
+    <string name="receipt_list_scan_receipt_error">Send receipt image error: </string>
 
     <!--edit user-->
     <string name="edit_user_header">User Information</string>
@@ -77,6 +78,8 @@
     <string name="receipt_product_list_delete_product_dialog_title">Delete Product</string>
     <string name="receipt_product_list_product_info_price_prefix">Total: </string>
     <string name="receipt_product_list_product_info_quantity_prefix">Quantity: </string>
+    <string name="receipt_product_list_delete_receipt_image">Delete current receipt image</string>
+    <string name="receipt_product_list_delete_receipt_error">Delete receipt image error: </string>
 
     <!--product-->
     <string name="product_activity">Edit Product</string>

@@ -110,7 +110,8 @@ class ReceiptImageFragment : Fragment() {
 
     private fun loadReceiptImage() {
         val receiptImageView: ImageView? = view?.findViewById(R.id.iv_receipt_product_list_receipt_image)
-        Picasso.get().load(imageUrl).into(receiptImageView)
+        if (imageUrl != null)
+            Picasso.get().load(imageUrl).into(receiptImageView)
     }
 
     companion object {
