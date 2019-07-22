@@ -103,12 +103,14 @@
               app:layout_constraintHorizontal_bias="0.45"
               android:id="@+id/tv_expense_report_total_expense_label"
               app:layout_constraintTop_toTopOf="@id/tv_expense_report_select_period_sort_by_label"
+              android:textSize="16sp"
               android:text="@string/expense_report_total_expense_label"/>
 
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               app:layout_constraintLeft_toRightOf="@id/tv_expense_report_total_expense_label"
               app:layout_constraintTop_toTopOf="@id/tv_expense_report_select_period_sort_by_label"
+              app:layout_constraintBottom_toBottomOf="@id/tv_expense_report_select_period_sort_by_label"
               app:layout_constraintRight_toRightOf="parent"
               app:layout_constraintHorizontal_bias="0.05"
               android:id="@+id/tv_expense_report_total_expense_prefix"
@@ -117,6 +119,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               app:layout_constraintTop_toTopOf="@id/tv_expense_report_select_period_sort_by_label"
+              app:layout_constraintBottom_toBottomOf="@id/tv_expense_report_select_period_sort_by_label"
               android:id="@+id/tv_expense_report_total_expense_value"
               app:layout_constraintLeft_toRightOf="@id/tv_expense_report_total_expense_prefix"
               app:layout_constraintRight_toRightOf="parent"
@@ -134,11 +137,21 @@
           app:layout_constraintTop_toBottomOf="@id/sp_expense_report_select_period_sort_by_spinner"
           android:layout_marginTop="@dimen/margin_small"/>
 
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              app:layout_constraintLeft_toLeftOf="@id/tv_expense_report_select_period_header"
+              app:layout_constraintTop_toBottomOf="@id/v_expense_report_select_period_sort_by_divider"
+              android:layout_marginTop="@dimen/margin_big"
+              android:textSize="16sp"
+              android:textStyle="bold"
+              android:id="@+id/tv_expense_report_product_list_header"
+              android:text="@string/receipt_product_list_receipt_product_list_tab"/>
+
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rv_expense_report_product_list"
-            app:layout_constraintTop_toBottomOf="@id/v_expense_report_select_period_sort_by_divider"
+            app:layout_constraintTop_toBottomOf="@id/tv_expense_report_product_list_header"
             android:layout_marginTop="@dimen/margin_small"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
