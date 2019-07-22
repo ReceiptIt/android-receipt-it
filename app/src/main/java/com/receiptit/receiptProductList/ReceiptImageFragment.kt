@@ -64,8 +64,8 @@ class ReceiptImageFragment : Fragment() {
         val call = receiptId?.let { imageService.deleteReceiptImage(it) }
         call?.enqueue(RetrofitCallback(object: RetrofitCallbackListener<SimpleResponse>{
             override fun onResponseSuccess(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
-                resetReceiptImage()
                 imageUrl = null
+                loadReceiptImage()
             }
 
             override fun onResponseError(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
@@ -115,6 +115,7 @@ class ReceiptImageFragment : Fragment() {
             empty_view.visibility = View.GONE
             Picasso.get().load(imageUrl).into(receiptImageView)
         } else {
+            resetReceiptImage()
             empty_view.visibility = View.VISIBLE
         }
     }

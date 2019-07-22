@@ -47,12 +47,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClickListener,
-    BaseNavigationDrawerActivity(), AddReceiptFragment.OnAddReceiptFragmentCloseListener{
+    BaseNavigationDrawerActivity(), AddReceiptFragment.OnAddReceiptFragmentCloseListener {
 
     private val USER_INFO = "USER_INFO"
     private val RECEIPT_ID = "RECEIPT_ID"
     private val RECEIPT_URL = "RECEIPT_URL"
-    private var userInfo : UserInfo? = null
+    private var userInfo: UserInfo? = null
     private var isFragmentShow = false
 
     private var fragment: AddReceiptFragment? = null
@@ -112,27 +112,28 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
     }
 
     private fun createList(list: List<ReceiptInfo>) {
+        val recyclerView = rv_receipt_list
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        val adapter = ReceiptListRecyclerViewAdapter(list, this)
+        recyclerView.adapter = adapter
         if (list.isNotEmpty()) {
             empty_view.visibility = View.GONE
-            val recyclerView = rv_receipt_list
-            recyclerView.layoutManager = LinearLayoutManager(this)
-            val adapter = ReceiptListRecyclerViewAdapter(list, this)
-            recyclerView.adapter = adapter
         } else {
             empty_view.visibility = View.VISIBLE
         }
     }
 
-    private fun showGetReceiptListError(error: String){
+    private fun showGetReceiptListError(error: String) {
         Toast.makeText(this, getString(R.string.receipt_list_retrieve_error) + error, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showDeleteReceiptListError(error: String){
+    private fun showDeleteReceiptListError(error: String) {
         Toast.makeText(this, getString(R.string.receipt_list_delete_receipt_error) + error, Toast.LENGTH_SHORT).show()
     }
 
     private fun showCreateReceiptError(error: String) {
-        Toast.makeText(this, getString(R.string.receipt_list_add_receipt_manually_error) + error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.receipt_list_add_receipt_manually_error) + error, Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun showSendReceiptImageError(error: String) {
@@ -173,11 +174,12 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResultUpdateUserInfo(requestCode, resultCode)
         if (requestCode == ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY ||
-            requestCode == ACTIVITY_RESULT_RECEIPT_PRODUCT_ACTIVITY) {
+            requestCode == ACTIVITY_RESULT_RECEIPT_PRODUCT_ACTIVITY
+        ) {
             if (resultCode == Activity.RESULT_OK) {
                 refreshReceiptList()
             }
-        } else if (requestCode == ACTIVITY_RESULT_CAMERA ){
+        } else if (requestCode == ACTIVITY_RESULT_CAMERA) {
             scanFakeReceipt()
         }
     }
@@ -188,7 +190,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         val receiptBody = createBody()
         val receiptService = ServiceGenerator.createService(ReceiptApi::class.java)
         val call = receiptBody?.let { receiptService.createReceipt(it) }
-        call?.enqueue(RetrofitCallback(object: RetrofitCallbackListener<ReceiptCreateResponse>{
+        call?.enqueue(RetrofitCallback(object : RetrofitCallbackListener<ReceiptCreateResponse> {
             override fun onResponseSuccess(
                 call: Call<ReceiptCreateResponse>?,
                 response: Response<ReceiptCreateResponse>?
@@ -211,7 +213,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
             }
 
         }))
-        
+
     }
 
     private fun sendReceiptImage(receiptId: Int) {
@@ -221,7 +223,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         val part = MultipartBody.Part.createFormData("image", imageFile.name, fileReqBody)
 
         val call = imageService.createReceiptImage(part, receiptId)
-        call.enqueue(RetrofitCallback(object: RetrofitCallbackListener<ReceiptImageCreaetResponse>{
+        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<ReceiptImageCreaetResponse> {
             override fun onResponseSuccess(
                 call: Call<ReceiptImageCreaetResponse>?,
                 response: Response<ReceiptImageCreaetResponse>?
@@ -242,7 +244,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
             }
         }))
     }
-    
+
     private fun createBody(): ReceiptCreateBody? {
         userInfo = intent.getSerializableExtra(USER_INFO) as UserInfo
         val userId = userInfo?.user_id
@@ -253,7 +255,8 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         return userId?.let {
             ReceiptCreateBody(
                 it, purchaseDate, 123.00, "Mie Mie",
-                "1J2 3U4")
+                "1J2 3U4"
+            )
         }
     }
 
@@ -273,25 +276,25 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
 
     private fun showFragment() {
         supportActionBar?.hide()
-        fragment = userInfo?.let { AddReceiptFragment.newInstance(it)}
+        fragment = userInfo?.let { AddReceiptFragment.newInstance(it) }
         val fm = supportFragmentManager
         val fragmentTransaction = fm.beginTransaction()
-        fragment?.let { fragmentTransaction.replace(R.id.fg_receipt_list_add_receipt, it)}
+        fragment?.let { fragmentTransaction.replace(R.id.fg_receipt_list_add_receipt, it) }
         fragmentTransaction.commit()
         isFragmentShow = true
     }
 
     override fun onAddReceiptFragmentClose() {
-       if (isFragmentShow) {
-           fragment?.let { supportFragmentManager.beginTransaction().remove(it)}?.commit()
-           isFragmentShow = false
-           supportActionBar?.show()
-       }
+        if (isFragmentShow) {
+            fragment?.let { supportFragmentManager.beginTransaction().remove(it) }?.commit()
+            isFragmentShow = false
+            supportActionBar?.show()
+        }
     }
 
     override fun onBackPressed() {
         if (isFragmentShow) {
-            fragment?.let { supportFragmentManager.beginTransaction().remove(it)}?.commit()
+            fragment?.let { supportFragmentManager.beginTransaction().remove(it) }?.commit()
             isFragmentShow = false
             supportActionBar?.show()
         } else {
@@ -327,7 +330,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
     private fun deleteReceipt(receiptId: Int) {
         val receiptService = ServiceGenerator.createService(ReceiptApi::class.java)
         val call = receiptService.deleteReceipt(receiptId)
-        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<SimpleResponse>{
+        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<SimpleResponse> {
             override fun onResponseSuccess(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
                 refreshReceiptList()
             }

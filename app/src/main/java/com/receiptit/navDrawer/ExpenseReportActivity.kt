@@ -33,7 +33,8 @@ import kotlin.Comparator
 
 private const val USER_INFO = "USER_INFO"
 
-class ExpenseReportActivity : AppCompatActivity(), ReceiptProductListRecyclerViewAdapter.OnReceiptProductListItemClickListener {
+class ExpenseReportActivity : AppCompatActivity(),
+    ReceiptProductListRecyclerViewAdapter.OnReceiptProductListItemClickListener {
 
     private lateinit var oldSortOption: String
     private var spinnerValueChange = false
@@ -69,7 +70,7 @@ class ExpenseReportActivity : AppCompatActivity(), ReceiptProductListRecyclerVie
             oldSortOption = defaultSortOption
         }
 
-        spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
 
@@ -116,7 +117,7 @@ class ExpenseReportActivity : AppCompatActivity(), ReceiptProductListRecyclerVie
             }
         }
 
-        ed_expense_report_select_period_period_value.addTextChangedListener(object: TextWatcher{
+        ed_expense_report_select_period_period_value.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(text: Editable?) {
                 if (isDatePickerValueChanged(text.toString()))
                     fetchData()
@@ -156,7 +157,13 @@ class ExpenseReportActivity : AppCompatActivity(), ReceiptProductListRecyclerVie
     private fun refreshTotalExpense() {
         val receiptService = ServiceGenerator.createService(ReceiptApi::class.java)
         val call1 =
-            userId?.let { receiptService.getExpenseDuringGivenPeriod(it, calendarFormat(calFrom), calendarFormat(calTo)) }
+            userId?.let {
+                receiptService.getExpenseDuringGivenPeriod(
+                    it,
+                    calendarFormat(calFrom),
+                    calendarFormat(calTo)
+                )
+            }
         call1?.enqueue(RetrofitCallback(object : RetrofitCallbackListener<ExpenseRetrieveResponse> {
             override fun onResponseSuccess(
                 call: Call<ExpenseRetrieveResponse>?,
@@ -210,11 +217,11 @@ class ExpenseReportActivity : AppCompatActivity(), ReceiptProductListRecyclerVie
         }))
     }
 
-    private fun showGenerateProductError(error: String){
+    private fun showGenerateProductError(error: String) {
         Toast.makeText(this, getString(R.string.expense_report_error) + error, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showGetExpenseError(error: String){
+    private fun showGetExpenseError(error: String) {
         Toast.makeText(this, getString(R.string.menu_expense_submit_error) + error, Toast.LENGTH_SHORT).show()
     }
 
@@ -224,13 +231,13 @@ class ExpenseReportActivity : AppCompatActivity(), ReceiptProductListRecyclerVie
     }
 
     private fun createList(products: ArrayList<ProductInfo>) {
+        sortProducts(products)
+        val recyclerView = rv_expense_report_product_list
+        recyclerView?.layoutManager = LinearLayoutManager(this)
+        val adapter = ExpenseReportListRecyclerViewAdapter(products)
+        recyclerView?.adapter = adapter
         if (products.isNotEmpty()) {
             empty_view.visibility = View.GONE
-            sortProducts(products)
-            val recyclerView = rv_expense_report_product_list
-            recyclerView?.layoutManager = LinearLayoutManager(this)
-            val adapter =  ExpenseReportListRecyclerViewAdapter(products)
-            recyclerView?.adapter = adapter
         } else {
             empty_view.visibility = View.VISIBLE
         }

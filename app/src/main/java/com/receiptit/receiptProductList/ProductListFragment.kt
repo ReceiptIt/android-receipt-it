@@ -27,7 +27,7 @@ import retrofit2.Response
 private const val RECEIPT_ID = "RECEIPT_ID"
 
 class ProductListFragment : Fragment(),
-    ReceiptProductListRecyclerViewAdapter.OnReceiptProductListItemClickListener  {
+    ReceiptProductListRecyclerViewAdapter.OnReceiptProductListItemClickListener {
 
     private var receiptId: Int? = null
     private var listener: OnProductListFragmentItemClickListener? = null
@@ -56,7 +56,7 @@ class ProductListFragment : Fragment(),
         refreshProductList()
     }
 
-     fun refreshProductList() {
+    fun refreshProductList() {
         val productService = ServiceGenerator.createService(ProductApi::class.java)
         val call = receiptId?.let { productService.getProductsFromReceipt(it) }
         call?.enqueue(RetrofitCallback(object : RetrofitCallbackListener<ProductFromReceiptResponse> {
@@ -83,21 +83,26 @@ class ProductListFragment : Fragment(),
         }))
     }
 
-    private fun showCreateProductError(error: String){
-        Toast.makeText(context, getString(R.string.receipt_product_list_retrieve_error) + error, Toast.LENGTH_SHORT).show()
+    private fun showCreateProductError(error: String) {
+        Toast.makeText(context, getString(R.string.receipt_product_list_retrieve_error) + error, Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun showDeleteProductError(error: String) {
-        Toast.makeText(context, getString(R.string.receipt_product_list_product_delete_error) + error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            context,
+            getString(R.string.receipt_product_list_product_delete_error) + error,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun createList(products: ArrayList<ProductInfo>) {
+        recyclerView = view?.findViewById(R.id.rv_receipt_product_list)
+        recyclerView?.layoutManager = LinearLayoutManager(context)
+        val adapter = ReceiptProductListRecyclerViewAdapter(products, this)
+        recyclerView?.adapter = adapter
         if (products.isNotEmpty()) {
             empty_view.visibility = View.GONE
-            recyclerView= view?.findViewById(R.id.rv_receipt_product_list)
-            recyclerView?.layoutManager = LinearLayoutManager(context)
-            val adapter =  ReceiptProductListRecyclerViewAdapter(products, this)
-            recyclerView?.adapter = adapter
         } else {
             empty_view.visibility = View.VISIBLE
         }
@@ -140,7 +145,7 @@ class ProductListFragment : Fragment(),
     private fun deleteProduct(productId: Int) {
         val productService = ServiceGenerator.createService(ProductApi::class.java)
         val call = productService.deleteProduct(productId)
-        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<SimpleResponse>{
+        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<SimpleResponse> {
             override fun onResponseSuccess(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
                 refreshProductList()
             }
@@ -174,7 +179,7 @@ class ProductListFragment : Fragment(),
 
 
     interface OnProductListFragmentItemClickListener {
-        fun onProductListFragmentItemClick (productId: Int)
+        fun onProductListFragmentItemClick(productId: Int)
         fun onProductListItemCreate(receiptId: Int)
     }
 
