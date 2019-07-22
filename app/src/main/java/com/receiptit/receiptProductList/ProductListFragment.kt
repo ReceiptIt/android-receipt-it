@@ -20,6 +20,7 @@ import com.receiptit.network.retrofit.RetrofitCallback
 import com.receiptit.network.retrofit.RetrofitCallbackListener
 import com.receiptit.network.service.ProductApi
 import com.receiptit.network.service.ReceiptApi
+import kotlinx.android.synthetic.main.fragment_product_list.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -91,10 +92,15 @@ class ProductListFragment : Fragment(),
     }
 
     private fun createList(products: ArrayList<ProductInfo>) {
-        recyclerView= view?.findViewById(R.id.rv_receipt_product_list)
-        recyclerView?.layoutManager = LinearLayoutManager(context)
-        val adapter =  ReceiptProductListRecyclerViewAdapter(products, this)
-        recyclerView?.adapter = adapter
+        if (products.isNotEmpty()) {
+            empty_view.visibility = View.GONE
+            recyclerView= view?.findViewById(R.id.rv_receipt_product_list)
+            recyclerView?.layoutManager = LinearLayoutManager(context)
+            val adapter =  ReceiptProductListRecyclerViewAdapter(products, this)
+            recyclerView?.adapter = adapter
+        } else {
+            empty_view.visibility = View.VISIBLE
+        }
     }
 
     override fun onReceiptProductListItemClick(productId: Int) {

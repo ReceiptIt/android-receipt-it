@@ -14,4 +14,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"/>
 
+    <include layout="@layout/empty_view"
+             android:id="@+id/empty_view"
+             android:visibility="gone"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

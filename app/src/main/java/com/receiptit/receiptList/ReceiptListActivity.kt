@@ -30,6 +30,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import com.receiptit.network.model.image.ReceiptImageCreaetResponse
@@ -111,10 +112,15 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
     }
 
     private fun createList(list: List<ReceiptInfo>) {
-        val recyclerView = rv_receipt_list
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = ReceiptListRecyclerViewAdapter(list, this)
-        recyclerView.adapter = adapter
+        if (list.isNotEmpty()) {
+            empty_view.visibility = View.GONE
+            val recyclerView = rv_receipt_list
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            val adapter = ReceiptListRecyclerViewAdapter(list, this)
+            recyclerView.adapter = adapter
+        } else {
+            empty_view.visibility = View.VISIBLE
+        }
     }
 
     private fun showGetReceiptListError(error: String){

@@ -14,6 +14,7 @@ import com.receiptit.network.retrofit.RetrofitCallback
 import com.receiptit.network.retrofit.RetrofitCallbackListener
 import com.receiptit.network.service.ImageApi
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_receipt_image.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -110,8 +111,12 @@ class ReceiptImageFragment : Fragment() {
 
     private fun loadReceiptImage() {
         val receiptImageView: ImageView? = view?.findViewById(R.id.iv_receipt_product_list_receipt_image)
-        if (imageUrl != null)
+        if (imageUrl != null) {
+            empty_view.visibility = View.GONE
             Picasso.get().load(imageUrl).into(receiptImageView)
+        } else {
+            empty_view.visibility = View.VISIBLE
+        }
     }
 
     companion object {

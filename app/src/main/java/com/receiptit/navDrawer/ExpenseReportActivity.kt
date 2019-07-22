@@ -224,11 +224,16 @@ class ExpenseReportActivity : AppCompatActivity(), ReceiptProductListRecyclerVie
     }
 
     private fun createList(products: ArrayList<ProductInfo>) {
-        sortProducts(products)
-        val recyclerView = rv_expense_report_product_list
-        recyclerView?.layoutManager = LinearLayoutManager(this)
-        val adapter =  ExpenseReportListRecyclerViewAdapter(products)
-        recyclerView?.adapter = adapter
+        if (products.isNotEmpty()) {
+            empty_view.visibility = View.GONE
+            sortProducts(products)
+            val recyclerView = rv_expense_report_product_list
+            recyclerView?.layoutManager = LinearLayoutManager(this)
+            val adapter =  ExpenseReportListRecyclerViewAdapter(products)
+            recyclerView?.adapter = adapter
+        } else {
+            empty_view.visibility = View.VISIBLE
+        }
     }
 
     override fun onReceiptProductListItemClick(productId: Int) {
