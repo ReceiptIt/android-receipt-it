@@ -22,4 +22,8 @@ interface ReceiptApi {
     @PUT("/receipt/{receiptId}")
     fun updateReceipt(@Path("receiptId") receiptId: Int, @Body body: ReceiptUpdateBody): Call<SimpleResponse>
 
+    @GET("/receipt/expense")
+    fun getExpenseDuringGivenPeriod(@Query("userId") userId: Int, @Query("startDate") startDate: String,
+                                    @Query("endDate") endDate: String): Call<ExpenseRetrieveResponse>
+
 }

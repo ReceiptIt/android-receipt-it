@@ -1,4 +1,4 @@
-package com.receiptit.userProfile
+package com.receiptit.navDrawer
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity

@@ -10,17 +10,17 @@
                 android:title="@string/receipt_list_edit_user"/>
     </group>
 
-    <!--<item android:title="Communicate">-->
-        <!--<menu>-->
-            <!--<item-->
-                    <!--android:id="@+id/nav_share"-->
-                    <!--android:icon="@drawable/ic_menu_share"-->
-                    <!--android:title="@string/menu_share"/>-->
-            <!--<item-->
-                    <!--android:id="@+id/nav_send"-->
-                    <!--android:icon="@drawable/ic_menu_send"-->
-                    <!--android:title="@string/menu_send"/>-->
-        <!--</menu>-->
-    <!--</item>-->
+    <item android:title="@string/menu_nav_drawer_analysis_divider">
+        <menu>
+            <item
+                    android:id="@+id/nav_compare_report"
+                    android:icon="@drawable/ic_compare_expense"
+                    android:title="@string/menu_nav_drawer_compare_expense_title"/>
+            <item
+                    android:id="@+id/nav_generate_report"
+                    android:icon="@drawable/ic_expense_report"
+                    android:title="@string/menu_nav_drawer_expense_report_title"/>
+        </menu>
+    </item>
 
 </menu>

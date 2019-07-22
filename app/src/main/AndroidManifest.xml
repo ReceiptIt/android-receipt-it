@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="com.receiptit">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.receiptit">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
             android:allowBackup="true"
@@ -12,7 +13,16 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme" tools:ignore="GoogleAppIndexingWarning">
+            android:theme="@style/AppTheme"
+            tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".navDrawer.ExpenseCompareDatePickActivity"
+                  android:label="@string/expense_compare_date_pick_activity_title">
+        </activity>
+        <activity
+                android:name=".navDrawer.ExpenseCompareChartActivity"
+                android:label="@string/expense_compare_activity_title">
+        </activity>
+
         <provider
                 android:name="androidx.core.content.FileProvider"
                 android:authorities="com.receiptit"
@@ -20,39 +30,44 @@
                 android:grantUriPermissions="true">
             <meta-data
                     android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/file_path"></meta-data>
+                    android:resource="@xml/file_path"/>
         </provider>
-        <activity android:name=".receiptProductList.CreateProductActivity"
-                  android:label="@string/receipt_product_list_product_add_activity_title">
+
+        <activity
+                android:name=".receiptProductList.CreateProductActivity"
+                android:label="@string/receipt_product_list_product_add_activity_title">
         </activity>
-        <activity android:name=".receiptList.ManuallyCreateActivity"
-                  android:label="@string/receipt_list_add_receipt_manually_activity_title">
+        <activity
+                android:name=".receiptList.ManuallyCreateActivity"
+                android:label="@string/receipt_list_add_receipt_manually_activity_title">
         </activity>
-        <activity android:name=".userProfile.EditUserActivity"
-                  android:label="@string/edit_user_activity_title">
+        <activity
+                android:name=".navDrawer.EditUserActivity"
+                android:label="@string/edit_user_activity_title">
         </activity>
-        <activity android:name=".product.ProductActivity"
-                  android:label="@string/product_activity">
+        <activity
+                android:name=".product.ProductActivity"
+                android:label="@string/product_activity">
         </activity>
         <activity
                 android:name=".receiptProductList.ReceiptProductListActivity"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:label="@string/receipt_product_list_activity">
+                android:label="@string/receipt_product_list_activity"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
                 android:name=".receiptList.ReceiptListActivity"
                 android:label="@string/title_activity_receipt_list"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".login.LoginActivity"
-                  android:label="@string/login_activity">
+        <activity
+                android:name=".login.LoginActivity"
+                android:label="@string/login_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

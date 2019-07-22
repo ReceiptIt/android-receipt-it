@@ -283,6 +283,16 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
        }
     }
 
+    override fun onBackPressed() {
+        if (isFragmentShow) {
+            fragment?.let { supportFragmentManager.beginTransaction().remove(it)}?.commit()
+            isFragmentShow = false
+            supportActionBar?.show()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     override fun onAddReceiptManually() {
         val intent = Intent(this, ManuallyCreateActivity::class.java)
         intent.putExtra(USER_INFO, userInfo)
