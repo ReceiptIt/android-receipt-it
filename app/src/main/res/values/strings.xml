@@ -115,5 +115,17 @@
     <string name="menu_expense_compare_enter_period_submit">Submit</string>
     <string name="menu_expense_submit_error">Expense retrieve error:</string>
 
+    <!--expense report-->
+    <string name="expense_report_activity_title">Expense Report</string>
+    <string name="expense_report_header">Generate Report</string>
+    <string name="expense_report_period_label">Period</string>
+    <string name="expense_report_sort_label">Sort By</string>
+    <string name="expense_report_error">Report generate error: </string>
+    <string name="expense_report_total_expense_label">Total Expense: </string>
+    <string-array name="expense_report_sort_spinner_list">
+        <item>Price</item>
+        <item>Time</item>
+    </string-array>
+
 
 </resources>

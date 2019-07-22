@@ -15,8 +15,12 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".navDrawer.ExpenseCompareDatePickActivity"
-                  android:label="@string/expense_compare_date_pick_activity_title">
+        <activity android:name=".navDrawer.ExpenseReportActivity"
+                  android:label="@string/expense_report_activity_title">
+        </activity>
+        <activity
+                android:name=".navDrawer.ExpenseCompareDatePickActivity"
+                android:label="@string/expense_compare_date_pick_activity_title">
         </activity>
         <activity
                 android:name=".navDrawer.ExpenseCompareChartActivity"

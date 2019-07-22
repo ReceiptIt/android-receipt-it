@@ -20,6 +20,7 @@ import com.receiptit.network.service.UserApi
 import com.receiptit.navDrawer.EditUserActivity
 import com.receiptit.navDrawer.ExpenseCompareChartActivity
 import com.receiptit.navDrawer.ExpenseCompareDatePickActivity
+import com.receiptit.navDrawer.ExpenseReportActivity
 import kotlinx.android.synthetic.main.activity_receipt_list.*
 import retrofit2.Call
 import retrofit2.Response
@@ -116,7 +117,7 @@ abstract class BaseNavigationDrawerActivity : AppCompatActivity(), NavigationVie
             }
 
             R.id.nav_generate_report ->{
-                val intent = Intent(this, ExpenseCompareChartActivity::class.java)
+                val intent = Intent(this, ExpenseReportActivity::class.java)
                 intent.putExtra(USER_INFO, userInfo)
                 startActivity(intent)
             }
