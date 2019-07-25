@@ -29,7 +29,6 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
 import androidx.core.content.FileProvider
-import com.receiptit.network.model.imageProcessor.ImageProcessResponse
 import com.receiptit.network.model.product.ProductBatchCreateBody
 import com.receiptit.network.model.product.ProductBatchCreateResponse
 import com.receiptit.network.model.product.ProductBatchInfo
@@ -424,7 +423,9 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         val totalAmount = imageResponse.result.total.toDouble()
         val merchant = imageResponse.result.establishment
         val postcode = imageResponse.result.addressNorm.postcode
-        return ReceiptUpdateBody(total_amount = totalAmount, merchant = merchant, postcode = postcode)
+        val purchaseDate = defaultPurchaseDate(imageResponse.result.date)
+        return ReceiptUpdateBody(total_amount = totalAmount, merchant = merchant, postcode = postcode,
+            purchase_date = purchaseDate)
     }
 
     private fun createBatchProductBody(imageResponse: TabScannerGetReceiptProcessedResponse, receiptId: Int): ProductBatchCreateBody {
@@ -449,6 +450,17 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
             "Missing product name"
         else
             name
+    }
+
+    private fun defaultPurchaseDate(date: String?): String {
+        return if (date == null || date == "") {
+            val calendar = Calendar.getInstance()
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            val prePurchaseDate = sdf.format(calendar.time)
+            TimeStringFormatter.concatenate(prePurchaseDate)
+        } else {
+            date.split(" ")[0]
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
