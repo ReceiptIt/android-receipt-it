@@ -31,7 +31,7 @@ class ReceiptImageFragment : Fragment() {
         super.onCreate(savedInstanceState)
         imageUrl = arguments?.getString(RECEIPT_IMAGE_URL)
         receiptId = arguments?.getInt(RECEIPT_ID)
-        setHasOptionsMenu(true)
+//        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -43,66 +43,67 @@ class ReceiptImageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        refreshReceiptImage()
+//        refreshReceiptImage()
+        loadReceiptImage()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_receipt_image, menu)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+//        inflater?.inflate(R.menu.menu_receipt_image, menu)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+//        return if (item?.itemId == R.id.menu_receipt_image_delete) {
+//            if (imageUrl != null)
+//                deleteReceiptImage()
+//            true
+//        } else
+//            super.onOptionsItemSelected(item)
+//    }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return if (item?.itemId == R.id.menu_receipt_image_delete) {
-            if (imageUrl != null)
-                deleteReceiptImage()
-            true
-        } else
-            super.onOptionsItemSelected(item)
-    }
+//    private fun deleteReceiptImage() {
+//        val imageService = ServiceGenerator.createService(ImageApi::class.java)
+//        val call = receiptId?.let { imageService.deleteReceiptImage(it) }
+//        call?.enqueue(RetrofitCallback(object: RetrofitCallbackListener<SimpleResponse>{
+//            override fun onResponseSuccess(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
+//                imageUrl = null
+//                loadReceiptImage()
+//            }
+//
+//            override fun onResponseError(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
+//                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
+//                message?.getErrorMessage()?.let { showDeleteProductError(it) }
+//            }
+//
+//            override fun onFailure(call: Call<SimpleResponse>?, t: Throwable?) {
+//                t?.message?.let { showDeleteProductError(it) }
+//            }
+//
+//        }))
+//    }
 
-    private fun deleteReceiptImage() {
-        val imageService = ServiceGenerator.createService(ImageApi::class.java)
-        val call = receiptId?.let { imageService.deleteReceiptImage(it) }
-        call?.enqueue(RetrofitCallback(object: RetrofitCallbackListener<SimpleResponse>{
-            override fun onResponseSuccess(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
-                imageUrl = null
-                loadReceiptImage()
-            }
+//     fun refreshReceiptImage() {
+//        val imageService = ServiceGenerator.createService(ImageApi::class.java)
+//        val call = receiptId?.let { imageService.getReceiptImage(it) }
+//        call?.enqueue(RetrofitCallback(object: RetrofitCallbackListener<ReceiptImageRetrieveResponse>{
+//            override fun onResponseSuccess(call: Call<ReceiptImageRetrieveResponse>?, response: Response<ReceiptImageRetrieveResponse>?) {
+//                imageUrl = response?.body()?.image_url
+//                loadReceiptImage()
+//            }
+//
+//            override fun onResponseError(call: Call<ReceiptImageRetrieveResponse>?, response: Response<ReceiptImageRetrieveResponse>?) {
+//                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
+//                message?.getErrorMessage()?.let { showDeleteProductError(it) }
+//            }
+//
+//            override fun onFailure(call: Call<ReceiptImageRetrieveResponse>?, t: Throwable?) {
+//                t?.message?.let { showDeleteProductError(it) }
+//            }
+//        }))
+//    }
 
-            override fun onResponseError(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
-                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
-                message?.getErrorMessage()?.let { showDeleteProductError(it) }
-            }
-
-            override fun onFailure(call: Call<SimpleResponse>?, t: Throwable?) {
-                t?.message?.let { showDeleteProductError(it) }
-            }
-
-        }))
-    }
-
-     fun refreshReceiptImage() {
-        val imageService = ServiceGenerator.createService(ImageApi::class.java)
-        val call = receiptId?.let { imageService.getReceiptImage(it) }
-        call?.enqueue(RetrofitCallback(object: RetrofitCallbackListener<ReceiptImageRetrieveResponse>{
-            override fun onResponseSuccess(call: Call<ReceiptImageRetrieveResponse>?, response: Response<ReceiptImageRetrieveResponse>?) {
-                imageUrl = response?.body()?.image_url
-                loadReceiptImage()
-            }
-
-            override fun onResponseError(call: Call<ReceiptImageRetrieveResponse>?, response: Response<ReceiptImageRetrieveResponse>?) {
-                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
-                message?.getErrorMessage()?.let { showDeleteProductError(it) }
-            }
-
-            override fun onFailure(call: Call<ReceiptImageRetrieveResponse>?, t: Throwable?) {
-                t?.message?.let { showDeleteProductError(it) }
-            }
-        }))
-    }
-
-    private fun showDeleteProductError(error: String) {
-        Toast.makeText(context, getString(R.string.receipt_product_list_delete_receipt_error) + error, Toast.LENGTH_SHORT).show()
-    }
+//    private fun showDeleteProductError(error: String) {
+//        Toast.makeText(context, getString(R.string.receipt_product_list_delete_receipt_error) + error, Toast.LENGTH_SHORT).show()
+//    }
 
     private fun resetReceiptImage() {
         val receiptImageView: ImageView? = view?.findViewById(R.id.iv_receipt_product_list_receipt_image)

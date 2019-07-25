@@ -37,6 +37,8 @@
     <string name="receipt_list_delete_receipt_dialog_message">Are you sure to delete this receipt?</string>
     <string name="receipt_list_delete_receipt_error">Delete receipt error:</string>
     <string name="receipt_list_scan_receipt_error">Send receipt image error:</string>
+    <string name="receipt_list_image_process_error">Image process error: </string>
+    <string name="receipt_list_product_batch_error">Product batch create error: </string>
 
     <!--edit user-->
     <string name="edit_user_header">User Information</string>

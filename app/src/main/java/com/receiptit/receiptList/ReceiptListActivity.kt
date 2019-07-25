@@ -1,6 +1,7 @@
 package com.receiptit.receiptList
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -11,8 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.receiptit.BaseNavigationDrawerActivity
 import com.receiptit.R
 import com.receiptit.network.ServiceGenerator
-import com.receiptit.network.model.receipt.ReceiptInfo
-import com.receiptit.network.model.receipt.UserReceiptsRetrieveResponse
 import com.receiptit.network.model.user.UserInfo
 import com.receiptit.network.retrofit.ResponseErrorBody
 import com.receiptit.network.retrofit.RetrofitCallback
@@ -33,10 +32,16 @@ import android.provider.MediaStore
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
-import com.receiptit.network.model.image.ReceiptImageCreaetResponse
-import com.receiptit.network.model.receipt.ReceiptCreateBody
-import com.receiptit.network.model.receipt.ReceiptCreateResponse
+import com.receiptit.network.model.image.ReceiptImageCreateResponse
+import com.receiptit.network.model.image.ReceiptImageInfo
+import com.receiptit.network.model.imageProcessor.ImageProcessResponse
+import com.receiptit.network.model.product.ProductBatchCreateBody
+import com.receiptit.network.model.product.ProductBatchCreateResponse
+import com.receiptit.network.model.product.ProductBatchInfo
+import com.receiptit.network.model.receipt.*
 import com.receiptit.network.service.ImageApi
+import com.receiptit.network.service.ImageProcessApi
+import com.receiptit.network.service.ProductApi
 import com.receiptit.util.TimeStringFormatter
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -45,6 +50,7 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClickListener,
     BaseNavigationDrawerActivity(), AddReceiptFragment.OnAddReceiptFragmentCloseListener {
@@ -62,6 +68,8 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
     private var ACTIVITY_RESULT_CAMERA = 4
     private lateinit var currentPhotoPath: String
 
+    private lateinit var dialog : ProgressDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receipt_list_nav_layout)
@@ -69,6 +77,8 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         setSupportActionBar(toolbar)
         super.onCreateDrawer()
         init()
+        dialog = ProgressDialog(this)
+        hideProgressBar()
         refreshReceiptList()
     }
 
@@ -124,21 +134,28 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
     }
 
     private fun showGetReceiptListError(error: String) {
-        Toast.makeText(this, getString(R.string.receipt_list_retrieve_error) + error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.receipt_list_retrieve_error) + error, Toast.LENGTH_LONG).show()
     }
 
     private fun showDeleteReceiptListError(error: String) {
-        Toast.makeText(this, getString(R.string.receipt_list_delete_receipt_error) + error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.receipt_list_delete_receipt_error) + error, Toast.LENGTH_LONG).show()
     }
 
     private fun showCreateReceiptError(error: String) {
-        Toast.makeText(this, getString(R.string.receipt_list_add_receipt_manually_error) + error, Toast.LENGTH_SHORT)
+        Toast.makeText(this, getString(R.string.receipt_list_add_receipt_manually_error) + error, Toast.LENGTH_LONG)
             .show()
     }
 
     private fun showSendReceiptImageError(error: String) {
-        Toast.makeText(this, getString(R.string.receipt_list_scan_receipt_error) + error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.receipt_list_scan_receipt_error) + error, Toast.LENGTH_LONG).show()
+    }
 
+    private fun showImageProcessError(error: String) {
+        Toast.makeText(this, getString(R.string.receipt_list_image_process_error) + error, Toast.LENGTH_LONG).show()
+    }
+
+    private fun showProductBatchError(error: String) {
+        Toast.makeText(this, getString(R.string.receipt_list_product_batch_error) + error, Toast.LENGTH_LONG).show()
     }
 
     private fun refreshReceiptList() {
@@ -153,6 +170,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
             ) {
                 val list = response?.body()?.receipts
                 list?.let { createList(it) }
+                hideProgressBar()
             }
 
             override fun onResponseError(
@@ -161,16 +179,17 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
             ) {
                 val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
                 message?.getErrorMessage()?.let { showGetReceiptListError(it) }
+                hideProgressBar()
             }
 
             override fun onFailure(call: Call<UserReceiptsRetrieveResponse>?, t: Throwable?) {
                 t?.message?.let { showGetReceiptListError(it) }
+                hideProgressBar()
             }
 
         }))
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResultUpdateUserInfo(requestCode, resultCode)
         if (requestCode == ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY ||
@@ -180,14 +199,15 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
                 refreshReceiptList()
             }
         } else if (requestCode == ACTIVITY_RESULT_CAMERA) {
-            scanFakeReceipt()
+            showProgessBar()
+            createFakeReceipt()
         }
     }
 
     //need to manually create a receipt at this time
-    private fun scanFakeReceipt() {
+    private fun createFakeReceipt() {
         // create a fake receipt
-        val receiptBody = createBody()
+        val receiptBody = createReceiptCreateBody()
         val receiptService = ServiceGenerator.createService(ReceiptApi::class.java)
         val call = receiptBody?.let { receiptService.createReceipt(it) }
         call?.enqueue(RetrofitCallback(object : RetrofitCallbackListener<ReceiptCreateResponse> {
@@ -206,10 +226,12 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
             ) {
                 val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
                 message?.getErrorMessage()?.let { showCreateReceiptError(it) }
+                hideProgressBar()
             }
 
             override fun onFailure(call: Call<ReceiptCreateResponse>?, t: Throwable?) {
                 t?.message?.let { showDeleteReceiptListError(it) }
+                hideProgressBar()
             }
 
         }))
@@ -223,29 +245,107 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         val part = MultipartBody.Part.createFormData("image", imageFile.name, fileReqBody)
 
         val call = imageService.createReceiptImage(part, receiptId)
-        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<ReceiptImageCreaetResponse> {
+        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<ReceiptImageCreateResponse> {
             override fun onResponseSuccess(
-                call: Call<ReceiptImageCreaetResponse>?,
-                response: Response<ReceiptImageCreaetResponse>?
+                call: Call<ReceiptImageCreateResponse>?,
+                response: Response<ReceiptImageCreateResponse>?
+            ) {
+                response?.body()?.imageInfo?.let { receiptImageProcess(it, receiptId) }
+            }
+
+            override fun onResponseError(
+                call: Call<ReceiptImageCreateResponse>?,
+                response: Response<ReceiptImageCreateResponse>?
+            ) {
+                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
+                message?.getErrorMessage()?.let { showSendReceiptImageError(it) }
+                hideProgressBar()
+            }
+
+            override fun onFailure(call: Call<ReceiptImageCreateResponse>?, t: Throwable?) {
+                t?.message?.let { showSendReceiptImageError(it) }
+                hideProgressBar()
+            }
+        }))
+    }
+
+    private fun receiptImageProcess(imageInfo: ReceiptImageInfo, receiptId: Int) {
+        val imageProcessService = ServiceGenerator.createImageProcessorService(ImageProcessApi::class.java)
+        val call = imageProcessService.processImage(imageInfo.url)
+        call.enqueue(RetrofitCallback(object: RetrofitCallbackListener<ImageProcessResponse> {
+            override fun onResponseSuccess(
+                call: Call<ImageProcessResponse>?,
+                response: Response<ImageProcessResponse>?
+            ) {
+                response?.body()?.let { updateReceiptInfo(it, receiptId) }
+            }
+
+            override fun onResponseError(call: Call<ImageProcessResponse>?, response: Response<ImageProcessResponse>?) {
+                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
+                message?.getErrorMessage()?.let { showImageProcessError(it) }
+                hideProgressBar()
+            }
+
+            override fun onFailure(call: Call<ImageProcessResponse>?, t: Throwable?) {
+                t?.message?.let { showImageProcessError(it) }
+                hideProgressBar()
+            }
+
+        }))
+    }
+
+    private fun updateReceiptInfo(imageResponse: ImageProcessResponse, receiptId: Int) {
+        val receiptService = ServiceGenerator.createService(ReceiptApi::class.java)
+        val updateBody = createReceiptUpdateBody(imageResponse)
+        val call = receiptService.updateReceipt(receiptId, updateBody)
+        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<SimpleResponse> {
+            override fun onResponseSuccess(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
+                createBatchProduct(imageResponse, receiptId)
+            }
+
+            override fun onResponseError(call: Call<SimpleResponse>?, response: Response<SimpleResponse>?) {
+                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
+                message?.getErrorMessage()?.let { showImageProcessError(it) }
+                hideProgressBar()
+            }
+
+            override fun onFailure(call: Call<SimpleResponse>?, t: Throwable?) {
+                t?.message?.let { showImageProcessError(it) }
+                hideProgressBar()
+            }
+        }))
+    }
+
+    private fun createBatchProduct(imageResponse: ImageProcessResponse, receiptId: Int) {
+        val productService = ServiceGenerator.createService(ProductApi::class.java)
+        val body = createBatchProductBody(imageResponse, receiptId)
+        val call = productService.createBatchProduct(body)
+        call.enqueue(RetrofitCallback(object: RetrofitCallbackListener<ProductBatchCreateResponse> {
+            override fun onResponseSuccess(
+                call: Call<ProductBatchCreateResponse>?,
+                response: Response<ProductBatchCreateResponse>?
             ) {
                 refreshReceiptList()
             }
 
             override fun onResponseError(
-                call: Call<ReceiptImageCreaetResponse>?,
-                response: Response<ReceiptImageCreaetResponse>?
+                call: Call<ProductBatchCreateResponse>?,
+                response: Response<ProductBatchCreateResponse>?
             ) {
                 val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
-                message?.getErrorMessage()?.let { showSendReceiptImageError(it) }
+                message?.getErrorMessage()?.let { showProductBatchError(it) }
+                hideProgressBar()
             }
 
-            override fun onFailure(call: Call<ReceiptImageCreaetResponse>?, t: Throwable?) {
-                t?.message?.let { showSendReceiptImageError(it) }
+            override fun onFailure(call: Call<ProductBatchCreateResponse>?, t: Throwable?) {
+                t?.message?.let { showProductBatchError(it) }
+                hideProgressBar()
             }
         }))
+
     }
 
-    private fun createBody(): ReceiptCreateBody? {
+    private fun createReceiptCreateBody(): ReceiptCreateBody? {
         userInfo = intent.getSerializableExtra(USER_INFO) as UserInfo
         val userId = userInfo?.user_id
         val calendar = Calendar.getInstance()
@@ -258,6 +358,23 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
                 "1J2 3U4"
             )
         }
+    }
+
+    private fun createReceiptUpdateBody(imageResponse: ImageProcessResponse): ReceiptUpdateBody {
+        val totalAmount = imageResponse.total_amount
+        val merchant = imageResponse.merchant
+        val postcode = imageResponse.postcode
+        return ReceiptUpdateBody(total_amount = totalAmount, merchant = merchant, postcode = postcode)
+    }
+
+    private fun createBatchProductBody(imageResponse: ImageProcessResponse, receiptId: Int): ProductBatchCreateBody {
+        val productBatchList = ArrayList<ProductBatchInfo>()
+        imageResponse.products.forEach {
+            val productBatchInfo = ProductBatchInfo(receipt_id = receiptId, name = it.name,
+                description = it.description, quantity = it.quantity, currency_code = "CAD", price = it.price)
+            productBatchList.add(productBatchInfo)
+        }
+        return ProductBatchCreateBody(productBatchList)
     }
 
 
@@ -360,6 +477,16 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
             // Save a file: path for use with ACTION_VIEW intents
             currentPhotoPath = absolutePath
         }
+    }
+
+    private fun hideProgressBar() {
+        if (dialog.isShowing)
+            dialog.hide()
+    }
+
+    private fun showProgessBar() {
+        dialog.setMessage("Loading ...")
+        dialog.show()
     }
 
 }

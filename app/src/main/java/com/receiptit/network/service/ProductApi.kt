@@ -21,4 +21,7 @@ interface ProductApi {
 
     @DELETE("/product/{productId}")
     fun deleteProduct(@Path("productId") productId: Int): Call<SimpleResponse>
+
+    @POST("/product/batch")
+    fun createBatchProduct(@Body body: ProductBatchCreateBody): Call<ProductBatchCreateResponse>
 }

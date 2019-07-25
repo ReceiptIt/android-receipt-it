@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ServiceGenerator {
 
     private const val API_BASE_URL = NetworkConstant.BASE_URL
+    private const val IMAGE_PROCESSOR_URL = NetworkConstant.IMAGE_PROCESSOR_URL
     private var authToken: String? = null
 
     private val httpClient = OkHttpClient.Builder()
@@ -18,6 +19,12 @@ object ServiceGenerator {
         .addConverterFactory(GsonConverterFactory.create())
 
     private var retrofit = builder.build()
+
+    private val imageProcessorBuilder = Retrofit.Builder()
+        .baseUrl(IMAGE_PROCESSOR_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+
+    private var imageProcessorRetrofit = builder.build()
 
     fun <S> createService(serviceClass: Class<S>): S {
         return createService(serviceClass, authToken)
@@ -34,12 +41,25 @@ object ServiceGenerator {
                 retrofit = builder.build()
             }
         }
-
         return retrofit.create(serviceClass)
     }
 
     fun <S> createAuthenticationService(serviceClass: Class<S>): S {
         return retrofit.create(serviceClass)
+    }
+
+    fun <S> createImageProcessorService(serviceClass: Class<S>): S {
+        if (!TextUtils.isEmpty(authToken)) {
+            val interceptor = authToken?.let { AuthenticationInterceptor(it) }
+
+            if (!httpClient.interceptors().contains(interceptor)) {
+                httpClient.addInterceptor(interceptor)
+
+                imageProcessorBuilder.client(httpClient.build())
+                imageProcessorRetrofit = imageProcessorBuilder.build()
+            }
+        }
+        return imageProcessorRetrofit.create(serviceClass)
     }
 
     fun storeAuthToken(token: String) {
