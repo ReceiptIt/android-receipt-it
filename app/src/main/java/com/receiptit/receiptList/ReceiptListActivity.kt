@@ -199,8 +199,10 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
                 refreshReceiptList()
             }
         } else if (requestCode == ACTIVITY_RESULT_CAMERA) {
-            showProgessBar()
-            createFakeReceipt()
+            if (File(currentPhotoPath).length() != 0L) {
+                showProgessBar()
+                createFakeReceipt()
+            }
         }
     }
 
