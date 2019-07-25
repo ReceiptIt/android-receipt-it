@@ -126,6 +126,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         } else {
             empty_view.visibility = View.VISIBLE
         }
+        hideProgressBar()
     }
 
     private fun showGetReceiptListError(error: String) {
@@ -165,7 +166,6 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
             ) {
                 val list = response?.body()?.receipts
                 list?.let { createList(it) }
-                hideProgressBar()
             }
 
             override fun onResponseError(
