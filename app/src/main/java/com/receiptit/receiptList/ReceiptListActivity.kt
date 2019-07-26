@@ -29,6 +29,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
 import androidx.core.content.FileProvider
+import com.receiptit.network.model.image.ReceiptImageCreateResponse
 import com.receiptit.network.model.product.ProductBatchCreateBody
 import com.receiptit.network.model.product.ProductBatchCreateResponse
 import com.receiptit.network.model.product.ProductBatchInfo
@@ -213,7 +214,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
             ) {
                 // upload image
                 val receiptId = response?.body()?.receiptInfo?.receipt_id
-                receiptId?.let { sendReceiptImageToTabScanner(it)}
+                receiptId?.let { sendReceiptImage(it)}
             }
 
             override fun onResponseError(
@@ -234,36 +235,36 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
 
     }
 
-//    private fun sendReceiptImage(receiptId: Int) {
-//        val imageService = ServiceGenerator.createService(ImageApi::class.java)
-//        val imageFile = File(currentPhotoPath)
-//        val fileReqBody = RequestBody.create(MediaType.parse("image/*"), imageFile)
-//        val part = MultipartBody.Part.createFormData("image", imageFile.name, fileReqBody)
-//
-//        val call = imageService.createReceiptImage(part, receiptId)
-//        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<ReceiptImageCreateResponse> {
-//            override fun onResponseSuccess(
-//                call: Call<ReceiptImageCreateResponse>?,
-//                response: Response<ReceiptImageCreateResponse>?
-//            ) {
-//                response?.body()?.imageInfo?.let { receiptImageProcess(it, receiptId) }
-//            }
-//
-//            override fun onResponseError(
-//                call: Call<ReceiptImageCreateResponse>?,
-//                response: Response<ReceiptImageCreateResponse>?
-//            ) {
-//                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
-//                message?.getErrorMessage()?.let { showSendReceiptImageError(it) }
-//                hideProgressBar()
-//            }
-//
-//            override fun onFailure(call: Call<ReceiptImageCreateResponse>?, t: Throwable?) {
-//                t?.message?.let { showSendReceiptImageError(it) }
-//                hideProgressBar()
-//            }
-//        }))
-//    }
+    private fun sendReceiptImage(receiptId: Int) {
+        val imageService = ServiceGenerator.createService(ImageApi::class.java)
+        val imageFile = File(currentPhotoPath)
+        val fileReqBody = RequestBody.create(MediaType.parse("image/*"), imageFile)
+        val part = MultipartBody.Part.createFormData("image", imageFile.name, fileReqBody)
+
+        val call = imageService.createReceiptImage(part, receiptId)
+        call.enqueue(RetrofitCallback(object : RetrofitCallbackListener<ReceiptImageCreateResponse> {
+            override fun onResponseSuccess(
+                call: Call<ReceiptImageCreateResponse>?,
+                response: Response<ReceiptImageCreateResponse>?
+            ) {
+                sendReceiptImageToTabScanner(receiptId)
+            }
+
+            override fun onResponseError(
+                call: Call<ReceiptImageCreateResponse>?,
+                response: Response<ReceiptImageCreateResponse>?
+            ) {
+                val message = response?.errorBody()?.string()?.let { ResponseErrorBody(it) }
+                message?.getErrorMessage()?.let { showSendReceiptImageError(it) }
+                hideProgressBar()
+            }
+
+            override fun onFailure(call: Call<ReceiptImageCreateResponse>?, t: Throwable?) {
+                t?.message?.let { showSendReceiptImageError(it) }
+                hideProgressBar()
+            }
+        }))
+    }
 
     private fun sendReceiptImageToTabScanner(receiptId: Int) {
         val tabScannerService = ServiceGenerator.createTabScannerService(TabScannerApi::class.java)
