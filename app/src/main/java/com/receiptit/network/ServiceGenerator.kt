@@ -24,7 +24,7 @@ object ServiceGenerator {
         .baseUrl(IMAGE_PROCESSOR_URL)
         .addConverterFactory(GsonConverterFactory.create())
 
-    private var imageProcessorRetrofit = builder.build()
+    private var imageProcessorRetrofit = imageProcessorBuilder.build()
 
     fun <S> createService(serviceClass: Class<S>): S {
         return createService(serviceClass, authToken)

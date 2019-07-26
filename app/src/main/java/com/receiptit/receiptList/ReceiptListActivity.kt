@@ -48,6 +48,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 import java.io.IOException
+import java.net.URLEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -373,7 +374,7 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         val productBatchList = ArrayList<ProductBatchInfo>()
         imageResponse.products.forEach {
             val productBatchInfo = ProductBatchInfo(receipt_id = receiptId, name = it.name,
-                description = it.description, quantity = it.quantity, currency_code = "CAD", price = it.price)
+                description = null, quantity = it.quantity, currency_code = "CAD", price = it.price)
             productBatchList.add(productBatchInfo)
         }
         return ProductBatchCreateBody(productBatchList)

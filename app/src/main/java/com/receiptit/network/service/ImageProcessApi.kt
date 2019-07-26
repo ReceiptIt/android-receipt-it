@@ -8,5 +8,5 @@ import retrofit2.http.Query
 interface ImageProcessApi {
 
     @GET("/receipt/process/result")
-    fun processImage(@Query("imageUrl") imageUrl: String): Call<ImageProcessResponse>
+    fun processImage(@Query("imageUrl", encoded = true) imageUrl: String): Call<ImageProcessResponse>
 }
