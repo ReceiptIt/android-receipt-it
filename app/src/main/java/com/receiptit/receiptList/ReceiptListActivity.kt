@@ -32,6 +32,11 @@ import android.provider.MediaStore
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import com.receiptit.databinding.ActivityLoginBinding
+import com.receiptit.databinding.ContentReceiptListBinding
+import com.receiptit.login.LoginViewModel
 import com.receiptit.network.model.image.ReceiptImageCreateResponse
 import com.receiptit.network.model.image.ReceiptImageInfo
 import com.receiptit.network.model.imageProcessor.ImageProcessResponse
@@ -43,6 +48,7 @@ import com.receiptit.network.service.ImageApi
 import com.receiptit.network.service.ImageProcessApi
 import com.receiptit.network.service.ProductApi
 import com.receiptit.util.TimeStringFormatter
+import com.receiptit.viewModel.ViewModelFactory
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -71,6 +77,10 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
 
     private lateinit var dialog : ProgressDialog
 
+    private val model: ReceiptListViewModel by lazy {
+        ViewModelProviders.of(this, ViewModelFactory { ReceiptListViewModel() }).get(ReceiptListViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_receipt_list_nav_layout)
@@ -81,6 +91,10 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         dialog = ProgressDialog(this)
         hideProgressBar()
         refreshReceiptList()
+
+//        val binding: ContentReceiptListBinding = DataBindingUtil.setContentView(this, R.layout.activity_receipt_list_nav_layout)
+//        binding.viewModel = model
+//        binding.lifecycleOwner = this
     }
 
     private fun init() {

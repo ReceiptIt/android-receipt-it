@@ -3,7 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-                name="viewmodel"
+                name="viewModel"
                 type="com.receiptit.login.LoginViewModel"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/ed_username"
-                    android:text="@={viewmodel.username}"/>
+                    android:text="@={viewModel.username}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/ed_password"
                     android:inputType="textPassword"
-                    android:text="@={viewmodel.password}"/>
+                    android:text="@={viewModel.password}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -75,7 +75,7 @@
                 android:layout_marginEnd="@dimen/margin_medium"
                 android:layout_marginTop="@dimen/margin_small"
                 android:text="@string/login_button"
-                android:onClick="@{()->viewmodel.onClick()}"/>
+                android:onClick="@{()->viewModel.onClick()}"/>
 
         <CheckBox
                 android:layout_width="wrap_content"
@@ -86,11 +86,11 @@
                 app:layout_constraintTop_toBottomOf="@id/tl_password_layout"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:text="@string/login_remember_me"
-                android:checked="@={viewmodel.rememberMe}"/>
+                android:checked="@={viewModel.rememberMe}"/>
 
         <ProgressBar
                 android:id="@+id/pb_login_progress_bar"
-                android:visibility="@{viewmodel.mutableProgressBarVisible}"
+                android:visibility="@{viewModel.mutableProgressBarVisible}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_big"
@@ -104,7 +104,7 @@
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:visibility="@{viewmodel.mutableProgressBarVisible}"
+                  android:visibility="@{viewModel.mutableProgressBarVisible}"
                   app:layout_constraintTop_toBottomOf="@id/pb_login_progress_bar"
                   app:layout_constraintBottom_toBottomOf="parent"
                   app:layout_constraintVertical_bias="0.15"
