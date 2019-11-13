@@ -92,9 +92,9 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         hideProgressBar()
         refreshReceiptList()
 
-//        val binding: ContentReceiptListBinding = DataBindingUtil.setContentView(this, R.layout.activity_receipt_list_nav_layout)
-//        binding.viewModel = model
-//        binding.lifecycleOwner = this
+        val binding: ContentReceiptListBinding = DataBindingUtil.setContentView(this, R.layout.activity_receipt_list_nav_layout)
+        binding.viewModel = model
+        binding.lifecycleOwner = this
     }
 
     private fun init() {
