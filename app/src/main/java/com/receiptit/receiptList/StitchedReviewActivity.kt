@@ -23,7 +23,6 @@ import java.util.*
 
 class StitchedReviewActivity : AppCompatActivity() {
     private var ACTIVITY_RESULT_STITCH = 5
-    private var ACTIVITY_RESULT_STITCH_REVIEW = 6
 
     private lateinit var result_picture: String
     private lateinit var stitchedImage: String
@@ -36,12 +35,11 @@ class StitchedReviewActivity : AppCompatActivity() {
         picture = intent.extras?.get("original_picture") as String
         stitchedImage = result_picture
 
-        val imageView = findViewById<ImageView>(R.id.iv_stitched_img)
 
         val bmOptions = BitmapFactory.Options()
         val bitmap = BitmapFactory.decodeFile(result_picture, bmOptions)
 
-        imageView.setImageBitmap(bitmap)
+        iv_stitched_img.setImageBitmap(bitmap)
 
         btn_send.setOnClickListener {
             val intent = Intent()
@@ -99,7 +97,6 @@ class StitchedReviewActivity : AppCompatActivity() {
             result.compress(Bitmap.CompressFormat.JPEG, 90, fos)
             fos.close()
             stitchedImage = filepath.absolutePath
-            iv_stitched_img.setImageBitmap(null)
             iv_stitched_img.setImageBitmap(result)
         } catch (e: FileNotFoundException) {
             Log.d("gg", "File not found: " + e.message)
