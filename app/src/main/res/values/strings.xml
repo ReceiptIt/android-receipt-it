@@ -37,8 +37,8 @@
     <string name="receipt_list_delete_receipt_dialog_message">Are you sure to delete this receipt?</string>
     <string name="receipt_list_delete_receipt_error">Delete receipt error:</string>
     <string name="receipt_list_scan_receipt_error">Send receipt image error:</string>
-    <string name="receipt_list_image_process_error">Image process error: </string>
-    <string name="receipt_list_product_batch_error">Product batch create error: </string>
+    <string name="receipt_list_image_process_error">Image process error:</string>
+    <string name="receipt_list_product_batch_error">Product batch create error:</string>
 
     <!--edit user-->
     <string name="edit_user_header">User Information</string>
@@ -122,8 +122,8 @@
     <string name="expense_report_header">Generate Report</string>
     <string name="expense_report_period_label">Period</string>
     <string name="expense_report_sort_label">Sort By</string>
-    <string name="expense_report_error">Report generate error: </string>
-    <string name="expense_report_total_expense_label">Total Expense: </string>
+    <string name="expense_report_error">Report generate error:</string>
+    <string name="expense_report_total_expense_label">Total Expense:</string>
     <string-array name="expense_report_sort_spinner_list">
         <item>Price</item>
         <item>Time</item>

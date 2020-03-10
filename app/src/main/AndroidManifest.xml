@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <!--<uses-permission android:name="android.permission.CAMERA" />-->
 
     <application
             android:allowBackup="true"
@@ -16,8 +15,15 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".navDrawer.ExpenseReportActivity"
-                  android:label="@string/expense_report_activity_title">
+        <activity android:name=".receiptList.StitchedReviewActivity">
+        </activity>
+        <activity
+                android:name=".receiptList.CroppedReviewActivity"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+                android:name=".navDrawer.ExpenseReportActivity"
+                android:label="@string/expense_report_activity_title">
         </activity>
         <activity
                 android:name=".navDrawer.ExpenseCompareDatePickActivity"
@@ -64,19 +70,17 @@
                 android:label="@string/title_activity_receipt_list"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity
-                android:name=".login.LoginActivity">
+        <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
                 android:name="com.yalantis.ucrop.UCropActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-
     </application>
 
 </manifest>

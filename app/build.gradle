@@ -53,4 +53,5 @@ dependencies {
     implementation 'com.borax12.materialdaterangepicker:library:1.9'
 
     implementation 'com.github.yalantis:ucrop:2.2.4'
+
 }

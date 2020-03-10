@@ -3,6 +3,9 @@ package com.receiptit.receiptList
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.Intent.EXTRA_ALLOW_MULTIPLE
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -44,6 +47,8 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -63,6 +68,9 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
     private var ACTIVITY_RESULT_MANUALLY_CREATE_RECEIPT_ACTIVITY = 2
     private var ACTIVITY_RESULT_RECEIPT_PRODUCT_ACTIVITY = 3
     private var ACTIVITY_RESULT_CAMERA = 4
+    private var ACTIVITY_RESULT_STITCH_REVIEW = 6
+    private var ACTIVITY_RESULT_CROPPED_REVIEW = 7
+
     private lateinit var currentPhotoPath: String
 
     private lateinit var dialog : ProgressDialog
@@ -197,7 +205,6 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
             }
         } else if (requestCode == ACTIVITY_RESULT_CAMERA) {
             if (File(currentPhotoPath).length() != 0L) {
-//                Log.d("photoPath", currentPhotoPath)
                 val uri = Uri.fromFile(File(currentPhotoPath))
                 openCropActivity(uri, uri)
 //                showProgressBar()
@@ -206,10 +213,22 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         }else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             val resultUri = data?.let { UCrop.getOutput(it) }
             currentPhotoPath = File(resultUri?.path).absolutePath
+            val intent = Intent(this, CroppedReviewActivity::class.java)
+            intent.putExtra("picture", currentPhotoPath)
+            startActivityForResult(intent, ACTIVITY_RESULT_CROPPED_REVIEW)
+
+        } else if (requestCode == ACTIVITY_RESULT_CROPPED_REVIEW && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                currentPhotoPath = data.extras?.get("return_picture") as String
+            }
             showProgressBar()
             createFakeReceipt()
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            val cropError = data?.let { UCrop.getError(it) }
+
+        } else if (requestCode == ACTIVITY_RESULT_CROPPED_REVIEW && resultCode == Activity.RESULT_CANCELED) {
+
+        } else if (requestCode == ACTIVITY_RESULT_CROPPED_REVIEW && resultCode == Activity.RESULT_FIRST_USER) {
+            showProgressBar()
+            createFakeReceipt()
         }
     }
 
@@ -589,8 +608,8 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
 
     private fun openCropActivity(sourceUri:Uri, destinationUri:Uri) {
         UCrop.of(sourceUri, destinationUri)
-            .withMaxResultSize(480, 480)
-            .withAspectRatio(3f, 5f)
+            .withMaxResultSize(1440, 2080)
+            .withAspectRatio(9f, 16f)
             .start(this)
     }
 
