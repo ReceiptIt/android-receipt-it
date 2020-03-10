@@ -86,7 +86,8 @@
                 app:layout_constraintTop_toBottomOf="@id/tl_password_layout"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:text="@string/login_remember_me"
-                android:checked="@={viewmodel.rememberMe}"/>
+                android:checked="@={viewmodel.rememberMe}"
+                android:visibility="gone"/>
 
         <ProgressBar
                 android:id="@+id/pb_login_progress_bar"

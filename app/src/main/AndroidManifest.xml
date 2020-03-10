@@ -15,7 +15,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".receiptList.StitchedReviewActivity">
+        <activity android:name=".receiptList.StitchedReviewActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
                 android:name=".receiptList.CroppedReviewActivity"
