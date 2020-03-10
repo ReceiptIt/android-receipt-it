@@ -146,11 +146,11 @@ class EditReceiptFragment : Fragment() {
         edReceiptInfoComment?.setText("")
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater?.inflate(R.menu.menu_edit_receipt, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (item?.itemId == R.id.menu_edit_receipt_save) {
             if (validTotalAmount()) {
                 saveReceiptInfo()

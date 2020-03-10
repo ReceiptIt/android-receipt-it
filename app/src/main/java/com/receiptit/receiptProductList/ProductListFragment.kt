@@ -129,11 +129,11 @@ class ProductListFragment : Fragment(),
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater?.inflate(R.menu.menu_add_product, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (item?.itemId == R.id.menu_add_product_add) {
             receiptId?.let { listener?.onProductListItemCreate(it) }
             true

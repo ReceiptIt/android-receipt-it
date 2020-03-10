@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.activity_receipt_list.*
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import androidx.core.content.FileProvider
 import com.receiptit.network.model.image.ReceiptImageCreateResponse
@@ -38,6 +39,7 @@ import com.receiptit.network.model.tabScanner.TabScannerGetReceiptProcessedRespo
 import com.receiptit.network.model.tabScanner.TabScannerUploadReceiptImageResponse
 import com.receiptit.network.service.*
 import com.receiptit.util.TimeStringFormatter
+import com.yalantis.ucrop.UCrop
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -195,9 +197,19 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
             }
         } else if (requestCode == ACTIVITY_RESULT_CAMERA) {
             if (File(currentPhotoPath).length() != 0L) {
-                showProgressBar()
-                createFakeReceipt()
+//                Log.d("photoPath", currentPhotoPath)
+                val uri = Uri.fromFile(File(currentPhotoPath))
+                openCropActivity(uri, uri)
+//                showProgressBar()
+//                createFakeReceipt()
             }
+        }else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            val resultUri = data?.let { UCrop.getOutput(it) }
+            currentPhotoPath = File(resultUri?.path).absolutePath
+            showProgressBar()
+            createFakeReceipt()
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            val cropError = data?.let { UCrop.getError(it) }
         }
     }
 
@@ -575,4 +587,11 @@ class ReceiptListActivity : ReceiptListRecyclerViewAdapter.OnReceiptListItemClic
         dialog.show()
     }
 
-}
+    private fun openCropActivity(sourceUri:Uri, destinationUri:Uri) {
+        UCrop.of(sourceUri, destinationUri)
+            .withMaxResultSize(480, 480)
+            .withAspectRatio(3f, 5f)
+            .start(this)
+    }
+
+    }
